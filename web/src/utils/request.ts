@@ -27,7 +27,7 @@ const axiosInstance: AxiosInstance = axios.create({
 // axios实例拦截响应
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
-    return response;
+    return response.data;
   },
   (error: any) => {
     const { response } = error;
