@@ -73,11 +73,11 @@ const userController = {
         errorJson(res, { message: "密码错误" });
         return;
       }
-      const online = await User.update(findUser.uuid, { online: 1 });
-      if (online == 1) {
-        errorJson(res, { message: "用户已登录" });
-        return;
-      }
+      // const online = await User.update(findUser.uuid, { online: 1 });
+      // if (online == 1) {
+      //   errorJson(res, { message: "用户已登录" });
+      //   return;
+      // }
       const token = "Bearer " + sign({ uuid: findUser.uuid });
       successJson(
         res,
