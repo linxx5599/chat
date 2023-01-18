@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import qs from "qs";
+import history from "@/hooks/history";
 import { getToken } from "@/utils/auth";
+import { message } from "antd";
 // 返回res.data的interface
 export interface IResponse {
   code: number | string;
@@ -30,6 +32,10 @@ axiosInstance.interceptors.response.use(
   (error: any) => {
     const { response } = error;
     const data = response ? response.data : error;
+    if (response.status === 401) {
+      history.replace("/login", { from: history.location.pathname });
+      message.warning(data.message);
+    }
     return Promise.reject(data);
   }
 );

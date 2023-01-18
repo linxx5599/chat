@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, Form, Input, message } from "antd";
 import "./index.less";
-import { userApi } from "@/api";
 const onFinish = (values: any) => {
   message.success("登录成功");
 };
@@ -10,14 +9,6 @@ const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo);
 };
 
-let tableData: Array<any> = [];
-
-const getUser = () => {
-  userApi.getUser().then((result) => {
-    tableData = result as Array<any>;
-  });
-};
-getUser();
 const Login = () => {
   return (
     <div className="login">
