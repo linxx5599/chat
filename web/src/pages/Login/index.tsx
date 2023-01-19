@@ -3,15 +3,16 @@ import { Form, Button, Input, message } from "antd";
 import "./index.less";
 import { loginApi } from "@/api";
 import { setToken } from "@/utils/auth";
-import history from "@/hooks/history";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigate = useNavigate();
   const onFinish = (values: any) => {
     loginApi
       .login(values)
       .then((res) => {
         message.success("登录成功");
-        setToken(res.token)
-        history.push("/chat", { from: history.location.pathname });
+        setToken(res.token);
+        navigate("/chat");
       })
       .catch((err) => {
         message.error(err.message);
