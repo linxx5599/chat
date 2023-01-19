@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import qs from "qs";
-import { getToken } from "@/utils/auth";
+import { getToken, removeToken } from "@/utils/auth";
 import { message } from "antd";
 // 返回res.data的interface
 export interface IResponse {
@@ -33,7 +33,8 @@ axiosInstance.interceptors.response.use(
     const data = response ? response.data : error;
     if (response.status === 401) {
       message.warning(data.message);
-      window.location.href = '/login'
+      removeToken();
+      window.location.href = "/login";
     }
     return Promise.reject(data);
   }

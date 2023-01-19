@@ -17,6 +17,7 @@
         "esModuleInterop": false,
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
+        "suppressImplicitAnyIndexErrors": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "module": "ESNext",
