@@ -1,9 +1,9 @@
 import React from "react";
-import { Form, Button, Input, message } from "antd";
+import { useNavigate } from "react-router-dom";
 import style from "./index.module.less";
+import { Form, Button, Input, message } from "antd";
 import { loginApi } from "@/api";
 import { setToken } from "@/utils/auth";
-import { useNavigate } from "react-router-dom";
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const onFinish = (values: any) => {
