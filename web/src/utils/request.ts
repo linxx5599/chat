@@ -1,7 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import qs from "qs";
 import { getToken, removeToken } from "@/utils/auth";
+import { BASE_URL } from "@/utils/config";
 import { message } from "antd";
+
 // 返回res.data的interface
 export interface IResponse {
   code: number | string;
@@ -10,7 +12,7 @@ export interface IResponse {
 }
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: process.env.BASE_ENV,
+  baseURL: BASE_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/x-www-form-urlencoded"
