@@ -34,7 +34,7 @@ axiosInstance.interceptors.response.use(
     if (response.status === 401) {
       message.warning(data.message);
       removeToken();
-      window.location.href = "/login";
+      // window.location.href = "/login";
     }
     return Promise.reject(data);
   }

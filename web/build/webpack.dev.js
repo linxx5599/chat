@@ -21,7 +21,6 @@ module.exports = merge(baseConfig, {
                 //是否跨域 
                 pathRewrite: { "^/api": "" },
                 ws: false
-
             },
         }
     },

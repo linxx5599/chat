@@ -1,9 +1,18 @@
-import React from "react";
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import Login from "@/pages/login";
-import Chat from "@/pages/chat";
-const NoMatch = () => <>404</>;
-const router = createBrowserRouter([
+import React, { lazy } from "react";
+import { Navigate, RouteObject } from "react-router-dom";
+
+const NoMatch: () => JSX.Element = () => <>404</>;
+
+const LayLoadingFn = (Element: () => Promise<any>) => {
+  const View = lazy(Element);
+  return (
+    <React.Suspense fallback={<>...</>}>
+      <View />
+    </React.Suspense>
+  );
+};
+
+const routes: RouteObject[] = [
   {
     path: "/",
     element: <Navigate to="/chat" />
@@ -11,17 +20,18 @@ const router = createBrowserRouter([
   {
     path: "/chat",
     id: "chat",
-    element: <Chat />
+    element: LayLoadingFn(() => import("@/pages/chat"))
   },
   {
     path: "/login",
     id: "login",
-    element: <Login />
+    element: LayLoadingFn(() => import("@/pages/login"))
   },
   {
     path: "*",
     id: "NoMatch",
     element: <NoMatch />
   }
-]);
-export default router;
+];
+
+export default routes;

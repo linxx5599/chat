@@ -1,10 +1,11 @@
 import React from "react";
-import { RouterProvider } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import router from "@/router";
 const App = () => {
+  const ReactView = useRoutes(router);
   return (
-    <RouterProvider router={router} />
-
+    // <RouterProvider router={router} />
+    <>{ReactView}</>
     // <Routes>
     //   <Route path="/" element={<Navigate to={navigatePath} />} />
     //   <Route
