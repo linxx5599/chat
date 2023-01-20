@@ -11,7 +11,7 @@ import { getToken } from "@/utils/auth";
 //   return <></>;
 // };
 
-const AuthRoute = () => {
+const AuthRoute: React.FC  = () => {
   const ReactView = useRoutes(router);
   const hasToken = getToken();
   const location = useLocation();

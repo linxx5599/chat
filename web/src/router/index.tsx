@@ -1,12 +1,12 @@
 import React, { lazy } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
-
+import Loading from "@/common/loading";
 const NoMatch: () => JSX.Element = () => <>404</>;
 
 const LayLoadingFn = (Element: () => Promise<any>) => {
   const View = lazy(Element);
   return (
-    <React.Suspense fallback={<>...</>}>
+    <React.Suspense fallback={<Loading />}>
       <View />
     </React.Suspense>
   );

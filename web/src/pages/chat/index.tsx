@@ -2,7 +2,7 @@ import React from "react";
 import "./index.less";
 import { userApi } from "@/api";
 
-const Chat = () => {
+const Chat: React.FC  = () => {
   const getUser = () => {
     userApi.getUser().then((result) => {
       console.log(result, "chst");

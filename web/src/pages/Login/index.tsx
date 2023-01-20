@@ -4,7 +4,7 @@ import "./index.less";
 import { loginApi } from "@/api";
 import { setToken } from "@/utils/auth";
 import { useNavigate } from "react-router-dom";
-const Login = () => {
+const Login: React.FC  = () => {
   const navigate = useNavigate();
   const onFinish = (values: any) => {
     loginApi
