@@ -1,8 +1,8 @@
 import React from "react";
-import "./index.less";
+import style from "./index.module.less";
 import { userApi } from "@/api";
 
-const Chat: React.FC  = () => {
+const Chat: React.FC = () => {
   const getUser = () => {
     userApi.getUser().then((result) => {
       console.log(result, "chst");
