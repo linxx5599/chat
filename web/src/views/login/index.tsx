@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./index.module.less";
 import { Form, Button, Input, message } from "antd";
 import { loginApi } from "@/api";
 import { setToken } from "@/utils/auth";
 const Login: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const navigate = useNavigate();
+
   const onFinish = (values: any) => {
+    setLoading(() => true);
     loginApi
       .login(values)
       .then((res) => {
@@ -16,7 +20,8 @@ const Login: React.FC = () => {
       })
       .catch((err) => {
         message.error(err.message);
-      });
+      })
+      .finally(() => setLoading(() => false));
   };
 
   return (
@@ -55,8 +60,13 @@ const Login: React.FC = () => {
               <span className={style.bottom}></span>
             </div>
           </Form.Item>
-          <Button className={style.btn} type="primary" htmlType="submit">
-            登录
+          <Button
+            loading={loading}
+            className={style.btn}
+            type="primary"
+            htmlType="submit"
+          >
+            {loading ? "" : "登录"}
           </Button>
         </Form>
       </div>

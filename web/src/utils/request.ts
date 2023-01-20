@@ -1,8 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import qs from "qs";
+import { message } from "antd";
 import { getToken, removeToken } from "@/utils/auth";
 import { BASE_URL } from "@/utils/config";
-import { message } from "antd";
+import { isObject } from "@/utils";
 
 // 返回res.data的interface
 export interface IResponse {
@@ -34,11 +35,12 @@ axiosInstance.interceptors.response.use(
     const { response } = error;
     const data = response ? response.data : error;
     if (response.status === 401) {
-      message.warning(data.message);
+      message.warning("登录已过期，请重新登录");
       removeToken();
       // window.location.href = "/login";
     }
-    return Promise.reject(data);
+    const msg = isObject(data) ? data : { message: data };
+    return Promise.reject(msg);
   }
 );
 

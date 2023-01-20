@@ -20,12 +20,12 @@ const routes: RouteObject[] = [
   {
     path: "/chat",
     id: "chat",
-    element: LayLoadingFn(() => import("@/pages/chat"))
+    element: LayLoadingFn(() => import("@/views/chat"))
   },
   {
     path: "/login",
     id: "login",
-    element: LayLoadingFn(() => import("@/pages/login"))
+    element: LayLoadingFn(() => import("@/views/login"))
   },
   {
     path: "*",

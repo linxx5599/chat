@@ -19,7 +19,7 @@
     }
     :global(.ant-col) {
       max-width: unset;
-      .ant-form-item-control-input + div {
+      :global(.ant-form-item-control-input) + div {
         transform: translate(15%, 0%);
       }
     }
@@ -121,6 +121,11 @@
       > span {
         left: 50%;
         top: 54%;
+        transform: translate(-50%, -50%);
+      }
+      :global(.ant-btn-loading-icon) {
+        left: 50%;
+        top: 30%;
         transform: translate(-50%, -50%);
       }
     }
