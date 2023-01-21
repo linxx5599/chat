@@ -2,10 +2,11 @@ import { isObject } from "@/utils";
 export default function (token: object) {
   if (!isObject(token)) return;
   let themeRule = `:root{`;
+  const withs: string[] = ["opacity", "index", "motion"];
   for (const key in token) {
     let val = token[key];
     //z-index
-    if (val >= 0 && key?.toLocaleLowerCase?.()?.indexOf?.('index') < 0) {
+    if (val > 0 && !withs.some((k) => key.toLocaleLowerCase().includes(k))) {
       val = val + "px";
     }
     themeRule += `--${key}:${val};`;
