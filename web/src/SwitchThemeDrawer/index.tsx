@@ -12,10 +12,13 @@ const SwitchThemeDrawer: React.FC = (props: any) => {
 
   const [open, setOpen] = useState(false);
   const settingClick = () => setOpen(!open);
-
-  const [color, setColor] = useState(theme.useToken().token.colorPrimary);
+  const colorPrimary = theme.useToken().token.colorPrimary;
+  const [color, setColor] = useState(colorPrimary);
   const [visible, setVisible] = useState(false);
-  useMemo(() => visible && setVisible(false), [open]);
+  useMemo(() => {
+    !open && visible && setVisible(false);
+    !open && color !== colorPrimary && setColor(colorPrimary);
+  }, [open]);
   const onClick = () => {
     setVisible(false);
     switchThemeColor && switchThemeColor(color);
