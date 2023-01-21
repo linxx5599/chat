@@ -1,0 +1,15 @@
+#CustomColors {
+  position: relative;
+}
+#CustomColors .sketch-picker {
+  width: 225px !important;
+}
+#CustomColors .sketch-picker .flexbox-fix label {
+  text-align: left !important;
+  padding-top: 9px !important;
+  padding-left: 3px;
+  padding-bottom: 13px !important;
+}
+#CustomColors .sketch-picker #rc-editable-input-1 {
+  width: 87% !important;
+}

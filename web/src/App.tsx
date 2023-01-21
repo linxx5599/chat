@@ -5,17 +5,19 @@ import cookie from "js-cookie";
 import { ConfigProvider, Watermark, Button, theme } from "antd";
 import AuthRoute from "./AuthRoute";
 import SwitchThemeDrawer from "./SwitchThemeDrawer";
-import { THEME_COLOR } from "@/utils/config";
+
+import { THEME_COLOR_NAME } from "@/utils/config";
 const App: React.FC = () => {
   const [locale, setLocale] = useState(enUS);
   const themeColor =
-    cookie.get(THEME_COLOR) || theme.useToken().token.colorPrimary;
+    cookie.get(THEME_COLOR_NAME) || theme.useToken().token.colorPrimary;
+
   //"#00b96b"
   const [colorPrimary, setColorPrimary] = useState(themeColor);
 
-  const switchThemeColor = () => {
-    setColorPrimary("#00b96b");
-    cookie.set(THEME_COLOR, "#00b96b");
+  const switchThemeColor = (color: string = "#00b96b") => {
+    cookie.set(THEME_COLOR_NAME, color);
+    setColorPrimary(color);
   };
   return (
     // <RouterProvider router={router} />
@@ -28,11 +30,8 @@ const App: React.FC = () => {
       }}
     >
       <Watermark content="node.js + express + mysql + react18">
-        <Button type="primary" onClick={switchThemeColor}>
-          切换颜色
-        </Button>
         <AuthRoute />
-        <SwitchThemeDrawer />
+        <SwitchThemeDrawer switchThemeColor={switchThemeColor} />
       </Watermark>
     </ConfigProvider>
     // <Routes>

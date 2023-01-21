@@ -73,8 +73,28 @@ module.exports = {
         ]
       },
       {
-        test: /.(png|jpg|jpeg|gif|svg)$/, // 匹配图片文件
-        // ...
+        test: /\.svg$/,
+        use: [
+          "svg-sprite-loader",
+          {
+            loader: "svgo-loader",
+            options: {
+              plugins: [
+                //删除svg原本的fill属性，方便修改图标颜色
+                {
+                  name: "removeAttrs",
+                  params: { attrs: "fill" }
+                }
+              ]
+            }
+          }
+        ],
+        generator: {
+          filename: "static/images/[name].[contenthash:8][ext]" // 加上[contenthash:8]
+        }
+      },
+      {
+        test: /.(png|jpg|jpeg|gif)$/, // 匹配图片文件
         generator: {
           filename: "static/images/[name].[contenthash:8][ext]" // 加上[contenthash:8]
         }
