@@ -34,8 +34,8 @@ const App: React.FC = () => {
     >
       <Watermark content="node.js + express + mysql + react18">
         <AuthRoute />
-        <SwitchThemeDrawer switchThemeColor={switchThemeColor} />
       </Watermark>
+      <SwitchThemeDrawer switchThemeColor={switchThemeColor} />
     </ConfigProvider>
     // <Routes>
     //   <Route path="/" element={<Navigate to={navigatePath} />} />
