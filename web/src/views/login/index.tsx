@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./index.module.less";
 import { Form, Button, Input, message } from "antd";
+
 import { loginApi } from "@/api";
 import { setToken } from "@/utils/auth";
 const Login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
-
   const onFinish = (values: any) => {
-    setLoading(() => true);
+    setLoading(true);
     loginApi
       .login(values)
       .then((res) => {
@@ -21,13 +21,15 @@ const Login: React.FC = () => {
       .catch((err) => {
         message.error(err.message);
       })
-      .finally(() => setLoading(() => false));
+      .finally(() => setLoading(false));
   };
 
   return (
     <div className={style["login-container"]}>
       <div className={style.login}>
-        <div className={style.header}>登录</div>
+        <div className={style.header}>
+          登录
+        </div>
         <Form
           name="basic"
           labelCol={{ span: 8 }}

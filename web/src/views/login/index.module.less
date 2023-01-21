@@ -1,10 +1,9 @@
 .login-container {
   height: 100vh;
   .login {
-    width: 358px;
+    width: 458px;
     height: 588px;
     border-radius: 15px;
-    padding: 0 50px;
     position: relative;
     left: 50%;
     top: 50%;
@@ -15,12 +14,12 @@
       font-weight: bold;
       text-align: center;
       line-height: 200px;
-      color: #61dafb;
+      color: var(--colorPrimary);
     }
     :global(.ant-col) {
       max-width: unset;
       :global(.ant-form-item-control-input) + div {
-        transform: translate(15%, 0%);
+        transform: translate(24%, 0%);
       }
     }
     .container {
@@ -41,18 +40,18 @@
       box-sizing: border-box;
       padding-left: 5px;
       background-color: #282c34;
-      color: #61dafb;
-      caret-color: #61dafb;
+      color: var(--colorPrimary);
+      caret-color: var(--colorPrimary);
     }
     input::placeholder {
-      color: #61dafb;
+      color: var(--colorPrimary);
     }
 
     span {
       position: absolute;
       content: "";
       display: block;
-      background-color: #61dafb;
+      background-color: var(--colorPrimary);
       transition: transform 0.1s ease-in-out;
     }
     .top,
@@ -116,7 +115,7 @@
       padding: 5px;
       width: 52%;
       margin-top: 40px;
-      background-color: #61dafb;
+      background-color: var(--colorPrimary);
       color: #fff;
       > span {
         left: 50%;
