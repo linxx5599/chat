@@ -7,11 +7,14 @@ import AuthRoute from "./AuthRoute";
 import SwitchThemeDrawer from "./SwitchThemeDrawer";
 
 import { THEME_COLOR_NAME } from "@/utils/config";
+import { testColor } from "@/utils";
 const App: React.FC = () => {
   const [locale, setLocale] = useState(enUS);
-  const themeColor =
-    cookie.get(THEME_COLOR_NAME) || theme.useToken().token.colorPrimary;
-
+  let themeColor = cookie.get(THEME_COLOR_NAME);
+  if (!testColor(themeColor)) {
+    themeColor = theme.useToken().token.colorPrimary;
+    cookie.set(THEME_COLOR_NAME, themeColor);
+  }
   //"#00b96b"
   const [colorPrimary, setColorPrimary] = useState(themeColor);
 
