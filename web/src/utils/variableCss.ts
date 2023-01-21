@@ -4,7 +4,10 @@ export default function (token: object) {
   let themeRule = `:root{`;
   for (const key in token) {
     let val = token[key];
-    if (val >= 0) val = val + "px";
+    //z-index
+    if (val >= 0 && key?.toLocaleLowerCase?.()?.indexOf?.('index') < 0) {
+      val = val + "px";
+    }
     themeRule += `--${key}:${val};`;
   }
   themeRule += "}";
