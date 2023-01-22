@@ -4,8 +4,12 @@ import cookie from "js-cookie";
 import { LANG_NAME } from "@/utils/config";
 import zh from "./zh";
 import en from "./en";
+let lng: any;
 export default function () {
-  let lng = cookie.get(LANG_NAME);
+  if (lng === cookie.get(LANG_NAME)) {
+    return;
+  }
+  lng = cookie.get(LANG_NAME);
   if (!lng || !["zh", "en"].includes(lng)) {
     lng = "zh";
     cookie.set(LANG_NAME, lng);

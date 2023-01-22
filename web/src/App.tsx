@@ -9,8 +9,6 @@ import SwitchSettingDrawer from "./SwitchThemeDrawer";
 import { THEME_COLOR_NAME, LANG_NAME } from "@/utils/config";
 import { testColor } from "@/utils";
 
-import langJs from "@/lang";
-
 const App: React.FC = () => {
   type localeType = "zh" | "en";
   const localeMap = {
@@ -27,9 +25,6 @@ const App: React.FC = () => {
     cookie.set(LANG_NAME, lan);
     setLocale(lan);
   };
-  useMemo(() => {
-    langJs();
-  }, [locale]);
 
   let themeColor = cookie.get(THEME_COLOR_NAME);
   if (!testColor(themeColor)) {

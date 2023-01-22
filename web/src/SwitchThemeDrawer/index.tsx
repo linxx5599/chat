@@ -7,6 +7,7 @@ import variableCss from "@/utils/variableCss";
 import Icon from "@/common/components/Icon";
 import style from "./index.module.less";
 import ColorPicker from "@/common/components/ColorPicker";
+import langJs from "@/lang";
 interface IProps {
   locale: "zh" | "en";
   switchLang: (lan: IProps["locale"]) => void;
@@ -33,7 +34,7 @@ const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
 
   useEffect(() => {
     variableCss(token);
-  }, [color]);
+  }, [color, lang]);
 
   useMemo(() => {
     !open && visible && setVisible(false);
@@ -44,6 +45,7 @@ const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
     setVisible(false);
     switchThemeColor && switchThemeColor(color);
     switchLang && switchLang(lang);
+    langJs();
     open && setOpen(false);
   };
   return (
