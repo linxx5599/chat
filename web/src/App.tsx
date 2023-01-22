@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import enUS from "antd/locale/en_US";
 import zhCN from "antd/locale/zh_CN";
 import cookie from "js-cookie";
@@ -8,15 +8,18 @@ import SwitchSettingDrawer from "./SwitchThemeDrawer";
 
 import { THEME_COLOR_NAME, LANG_NAME } from "@/utils/config";
 import { testColor } from "@/utils";
+
+import langJs from "@/lang";
+
 const App: React.FC = () => {
-  type localeType = "zhCN" | "enUS";
+  type localeType = "zh" | "en";
   const localeMap = {
-    zhCN,
-    enUS
+    zh: zhCN,
+    en: enUS
   };
   let lang = cookie.get(LANG_NAME) as localeType;
   if (!lang || !localeMap[lang]) {
-    lang = "zhCN";
+    lang = "zh";
     cookie.set(LANG_NAME, lang);
   }
   const [locale, setLocale] = useState(lang);
@@ -24,6 +27,9 @@ const App: React.FC = () => {
     cookie.set(LANG_NAME, lan);
     setLocale(lan);
   };
+  useMemo(() => {
+    langJs();
+  }, [locale]);
 
   let themeColor = cookie.get(THEME_COLOR_NAME);
   if (!testColor(themeColor)) {

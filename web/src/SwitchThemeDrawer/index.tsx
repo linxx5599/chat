@@ -1,17 +1,21 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { theme, Button, Descriptions, Select } from "antd";
+
+import { useTranslation } from "react-i18next";
+
 import variableCss from "@/utils/variableCss";
 import Icon from "@/common/components/Icon";
 import style from "./index.module.less";
 import ColorPicker from "@/common/components/ColorPicker";
-
 interface IProps {
-  locale: "zhCN" | "enUS";
+  locale: "zh" | "en";
   switchLang: (lan: IProps["locale"]) => void;
   switchThemeColor: (color?: string) => void;
 }
 const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
   const { switchThemeColor, locale, switchLang } = props;
+
+  const { t } = useTranslation();
 
   const { token } = theme.useToken();
 
@@ -40,7 +44,7 @@ const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
     setVisible(false);
     switchThemeColor && switchThemeColor(color);
     switchLang && switchLang(lang);
-    open && setOpen(false)
+    open && setOpen(false);
   };
   return (
     <div className={`${style.themeSettingBox} ${open ? style.open : ""}`}>
@@ -48,20 +52,20 @@ const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
         <Icon name={open ? "close" : "setting"} style={{ fill: "#fff" }} />
       </div>
       <div className={style.themeSettingItems}>
-        <div className="title">设置</div>
+        <div className="title">{t("setting")}</div>
         <Descriptions>
-          <Descriptions.Item span={3} label="语言">
+          <Descriptions.Item span={3} label={t("lang")}>
             <Select
               style={{ width: 100 }}
               value={lang}
               onChange={(v) => setLang(v)}
               options={[
-                { value: "zhCN", label: "中文" },
-                { value: "enUS", label: "English" }
+                { value: "zh", label: "中文" },
+                { value: "en", label: "English" }
               ]}
             />
           </Descriptions.Item>
-          <Descriptions.Item span={3} label="主题色">
+          <Descriptions.Item span={3} label={t("themeColor")}>
             <ColorPicker
               color={color}
               setColor={setColor}
@@ -76,7 +80,7 @@ const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
           style={{ position: "absolute", bottom: "16px", right: "24px" }}
           onClick={onClick}
         >
-          确定
+          {t("confirm")}
         </Button>
       </div>
     </div>

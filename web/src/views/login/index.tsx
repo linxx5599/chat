@@ -3,9 +3,16 @@ import { useNavigate } from "react-router-dom";
 import style from "./index.module.less";
 import { Form, Button, Input, message } from "antd";
 
+import { useTranslation } from "react-i18next";
+
 import { loginApi } from "@/api";
 import { setToken } from "@/utils/auth";
 const Login: React.FC = () => {
+  const { t } = useTranslation();
+  const login = t("login");
+  const userNameTip = t("userNameTip");
+  const userPasswordTip = t("userPasswordTip");
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -27,7 +34,7 @@ const Login: React.FC = () => {
   return (
     <div className={style["login-container"]}>
       <div className={style["login"]}>
-        <div className={style["header"]}>登录</div>
+        <div className={style["header"]}>{login}</div>
         <Form
           name="basic"
           labelCol={{ span: 8 }}
@@ -38,10 +45,10 @@ const Login: React.FC = () => {
         >
           <Form.Item
             name="name"
-            rules={[{ required: true, message: "请输入用户名" }]}
+            rules={[{ required: true, message: userNameTip }]}
           >
             <div className={style["container"]}>
-              <Input type="text" placeholder="请输入用户名" />
+              <Input type="text" placeholder={userNameTip} />
               <span className={style["left"]}></span>
               <span className={style["right"]}></span>
               <span className={style["top"]}></span>
@@ -50,10 +57,10 @@ const Login: React.FC = () => {
           </Form.Item>
           <Form.Item
             name="password"
-            rules={[{ required: true, message: "请输入密码" }]}
+            rules={[{ required: true, message: userPasswordTip }]}
           >
             <div className={style["container1"]}>
-              <Input type="password" placeholder="请输入密码" />
+              <Input type="password" placeholder={userPasswordTip} />
               <span className={style["left"]}></span>
               <span className={style["right"]}></span>
               <span className={style["top"]}></span>
@@ -66,7 +73,7 @@ const Login: React.FC = () => {
             type="primary"
             htmlType="submit"
           >
-            {loading ? "" : "登录"}
+            {loading ? "" : login}
           </Button>
         </Form>
       </div>
