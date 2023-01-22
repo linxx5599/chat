@@ -1,27 +1,46 @@
-import React, { useState, useMemo } from "react";
-import { theme, Button } from "antd";
+import React, { useState, useMemo, useEffect } from "react";
+import { theme, Button, Descriptions, Select } from "antd";
 import variableCss from "@/utils/variableCss";
 import Icon from "@/common/components/Icon";
 import style from "./index.module.less";
 import ColorPicker from "@/common/components/ColorPicker";
-const SwitchThemeDrawer: React.FC = (props: any) => {
-  const { switchThemeColor } = props;
+
+interface IProps {
+  locale: "zhCN" | "enUS";
+  switchLang: (lan: IProps["locale"]) => void;
+  switchThemeColor: (color?: string) => void;
+}
+const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
+  const { switchThemeColor, locale, switchLang } = props;
 
   const { token } = theme.useToken();
-  variableCss(token);
 
   const [open, setOpen] = useState(false);
   const settingClick = () => setOpen(!open);
   const colorPrimary = theme.useToken().token.colorPrimary;
+
+  // //切换语言
+  const [lang, setLang] = useState(locale);
+
+  //切换主题
   const [color, setColor] = useState(colorPrimary);
+  //控制打开、关闭主题组件
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    variableCss(token);
+  }, [color]);
+
   useMemo(() => {
     !open && visible && setVisible(false);
     !open && color !== colorPrimary && setColor(colorPrimary);
+    !open && lang !== locale && setLang(locale);
   }, [open]);
   const onClick = () => {
     setVisible(false);
     switchThemeColor && switchThemeColor(color);
+    switchLang && switchLang(lang);
+    open && setOpen(false)
   };
   return (
     <div className={`${style.themeSettingBox} ${open ? style.open : ""}`}>
@@ -29,13 +48,29 @@ const SwitchThemeDrawer: React.FC = (props: any) => {
         <Icon name={open ? "close" : "setting"} style={{ fill: "#fff" }} />
       </div>
       <div className={style.themeSettingItems}>
-        <div className="title">主题色切换</div>
-        <ColorPicker
-          color={color}
-          setColor={setColor}
-          visible={visible}
-          setVisible={setVisible}
-        />
+        <div className="title">设置</div>
+        <Descriptions>
+          <Descriptions.Item span={3} label="语言">
+            <Select
+              style={{ width: 100 }}
+              value={lang}
+              onChange={(v) => setLang(v)}
+              options={[
+                { value: "zhCN", label: "中文" },
+                { value: "enUS", label: "English" }
+              ]}
+            />
+          </Descriptions.Item>
+          <Descriptions.Item span={3} label="主题色">
+            <ColorPicker
+              color={color}
+              setColor={setColor}
+              visible={visible}
+              setVisible={setVisible}
+            />
+          </Descriptions.Item>
+        </Descriptions>
+
         <Button
           type="primary"
           style={{ position: "absolute", bottom: "16px", right: "24px" }}
@@ -48,4 +83,4 @@ const SwitchThemeDrawer: React.FC = (props: any) => {
   );
 };
 
-export default SwitchThemeDrawer;
+export default SwitchSettingDrawer;

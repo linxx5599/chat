@@ -19,7 +19,7 @@ const CustomColors = (props: any) => {
   };
 
   return (
-    <div id="CustomColors">
+    <div className={style.CustomColors}>
       <div className={style.swatch} onClick={handleClick}>
         <div className={style.color} style={{ background: color }} />
       </div>

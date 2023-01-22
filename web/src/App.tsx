@@ -2,19 +2,35 @@ import React, { useState } from "react";
 import enUS from "antd/locale/en_US";
 import zhCN from "antd/locale/zh_CN";
 import cookie from "js-cookie";
-import { ConfigProvider, Watermark, Button, theme } from "antd";
+import { ConfigProvider, Watermark, theme } from "antd";
 import AuthRoute from "./AuthRoute";
-import SwitchThemeDrawer from "./SwitchThemeDrawer";
+import SwitchSettingDrawer from "./SwitchThemeDrawer";
 
-import { THEME_COLOR_NAME } from "@/utils/config";
+import { THEME_COLOR_NAME, LANG_NAME } from "@/utils/config";
 import { testColor } from "@/utils";
 const App: React.FC = () => {
-  const [locale, setLocale] = useState(enUS);
+  type localeType = "zhCN" | "enUS";
+  const localeMap = {
+    zhCN,
+    enUS
+  };
+  let lang = cookie.get(LANG_NAME) as localeType;
+  if (!lang || !localeMap[lang]) {
+    lang = "zhCN";
+    cookie.set(LANG_NAME, lang);
+  }
+  const [locale, setLocale] = useState(lang);
+  const switchLang = (lan: localeType) => {
+    cookie.set(LANG_NAME, lan);
+    setLocale(lan);
+  };
+
   let themeColor = cookie.get(THEME_COLOR_NAME);
   if (!testColor(themeColor)) {
     themeColor = theme.useToken().token.colorPrimary;
     cookie.set(THEME_COLOR_NAME, themeColor);
   }
+
   //"#00b96b"
   const [colorPrimary, setColorPrimary] = useState(themeColor);
 
@@ -25,7 +41,7 @@ const App: React.FC = () => {
   return (
     // <RouterProvider router={router} />
     <ConfigProvider
-      locale={locale}
+      locale={localeMap[lang]}
       theme={{
         token: {
           colorPrimary
@@ -35,7 +51,11 @@ const App: React.FC = () => {
       <Watermark content="node.js + express + mysql + react18">
         <AuthRoute />
       </Watermark>
-      <SwitchThemeDrawer switchThemeColor={switchThemeColor} />
+      <SwitchSettingDrawer
+        locale={locale}
+        switchLang={switchLang}
+        switchThemeColor={switchThemeColor}
+      />
     </ConfigProvider>
     // <Routes>
     //   <Route path="/" element={<Navigate to={navigatePath} />} />

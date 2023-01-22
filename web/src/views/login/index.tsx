@@ -26,10 +26,8 @@ const Login: React.FC = () => {
 
   return (
     <div className={style["login-container"]}>
-      <div className={style.login}>
-        <div className={style.header}>
-          登录
-        </div>
+      <div className={style["login"]}>
+        <div className={style["header"]}>登录</div>
         <Form
           name="basic"
           labelCol={{ span: 8 }}
@@ -42,29 +40,29 @@ const Login: React.FC = () => {
             name="name"
             rules={[{ required: true, message: "请输入用户名" }]}
           >
-            <div className={style.container}>
+            <div className={style["container"]}>
               <Input type="text" placeholder="请输入用户名" />
-              <span className={style.left}></span>
-              <span className={style.right}></span>
-              <span className={style.top}></span>
-              <span className={style.bottom}></span>
+              <span className={style["left"]}></span>
+              <span className={style["right"]}></span>
+              <span className={style["top"]}></span>
+              <span className={style["bottom"]}></span>
             </div>
           </Form.Item>
           <Form.Item
             name="password"
             rules={[{ required: true, message: "请输入密码" }]}
           >
-            <div className={style.container1}>
+            <div className={style["container1"]}>
               <Input type="password" placeholder="请输入密码" />
-              <span className={style.left}></span>
-              <span className={style.right}></span>
-              <span className={style.top}></span>
-              <span className={style.bottom}></span>
+              <span className={style["left"]}></span>
+              <span className={style["right"]}></span>
+              <span className={style["top"]}></span>
+              <span className={style["bottom"]}></span>
             </div>
           </Form.Item>
           <Button
             loading={loading}
-            className={style.btn}
+            className={style["btn"]}
             type="primary"
             htmlType="submit"
           >

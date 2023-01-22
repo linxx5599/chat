@@ -6,7 +6,6 @@ icons();
 // 定义当前项目的路由模式
 import App from "./App";
 import "@/style/index.less";
-import "@/style//index.css";
 
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
