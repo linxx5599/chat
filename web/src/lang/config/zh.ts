@@ -5,5 +5,6 @@ export default {
   confirm: "确定",
   lang: "语言",
   setting: "设置",
-  themeColor:"主题色"
+  themeColor:"主题色",
+  loading: "加载中..."
 }

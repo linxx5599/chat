@@ -12,9 +12,12 @@ for (let index = 0; index < fileLangs.keys().length; index++) {
   resources[ketName] = { translation: fileLangs(key).default };
 }
 
+export const i18nResArr = Object.keys(resources);
+
+
 export default function () {
   let lng = cookie.get(LANG_NAME);
-  if (!lng || !["zh", "en"].includes(lng)) {
+  if (!lng || !i18nResArr.includes(lng)) {
     lng = "zh";
     cookie.set(LANG_NAME, lng);
   }
@@ -38,3 +41,4 @@ export default function () {
       }
     });
 }
+

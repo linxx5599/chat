@@ -8,6 +8,7 @@ import SwitchSettingDrawer from "./SwitchThemeDrawer";
 
 import { THEME_COLOR_NAME, LANG_NAME } from "@/utils/config";
 import { testColor } from "@/utils";
+import  { i18nResArr } from "@/lang";
 
 const App: React.FC = () => {
   type localeType = "zh" | "en";
@@ -16,7 +17,7 @@ const App: React.FC = () => {
     en: enUS
   };
   let lang = cookie.get(LANG_NAME) as localeType;
-  if (!lang || !localeMap[lang]) {
+  if (!lang || !i18nResArr.includes(lang)) {
     lang = "zh";
     cookie.set(LANG_NAME, lang);
   }

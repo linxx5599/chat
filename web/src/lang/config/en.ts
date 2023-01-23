@@ -5,5 +5,6 @@ export default {
   confirm: "confirm",
   lang: "language",
   setting: "setting",
-  themeColor:"Theme color"
+  themeColor: "Theme color",
+  loading: "Loading..."
 }
