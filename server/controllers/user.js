@@ -29,13 +29,7 @@ const userController = {
         errorJson(res, { message: "用户id不能为空" });
         return;
       }
-      const userData = await User.info(
-        uuid,
-        "name",
-        "uuid",
-        "language",
-        "themeColor"
-      );
+      const userData = await User.info(uuid, "name", "uuid");
       const [data] = userData;
       if (!data) {
         errorJson(res, { message: "用户为空" });
