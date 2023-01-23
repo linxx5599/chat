@@ -14,6 +14,11 @@ class Base {
     insert(params) {
         return knex(this.table).insert(params);
     }
+    
+    // 详情
+    info(uuid, ...arg) {
+        return knex(this.table).where('uuid', '=', uuid).select(...arg);
+    }
 
     // 更改
     update(uuid, params) {

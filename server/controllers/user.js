@@ -11,9 +11,36 @@ const userController = {
   // showUser 获取用户数据并返回到页面
   async showUser(req, res, next) {
     try {
-      const userData = await User.all("name", "uuid", "online");
+      const userData = await User.all("name", "uuid");
       successJson(res, {
         data: userData
+      });
+    } catch (e) {
+      errorJson(res, { data: getErrorMsg(e) });
+    }
+  },
+  // showUser 获取用户数据并返回到页面
+  async showUserInfo(req, res, next) {
+    try {
+      const { uuid } = req.query;
+      if (!uuid) {
+        errorJson(res, { message: "用户id不能为空" });
+        return;
+      }
+      const userData = await User.info(
+        uuid,
+        "name",
+        "uuid",
+        "language",
+        "themeColor"
+      );
+      const [data] = userData
+      if (!data) {
+        errorJson(res, { message: "用户为空" });
+        return;
+      }
+      successJson(res, {
+        data
       });
     } catch (e) {
       errorJson(res, { data: getErrorMsg(e) });
@@ -73,11 +100,6 @@ const userController = {
         errorJson(res, { message: "密码错误" });
         return;
       }
-      // const online = await User.update(findUser.uuid, { online: 1 });
-      // if (online == 1) {
-      //   errorJson(res, { message: "用户已登录" });
-      //   return;
-      // }
       const token = "Bearer " + sign({ uuid: findUser.uuid });
       successJson(
         res,
