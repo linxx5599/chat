@@ -22,7 +22,7 @@ const userController = {
   // showUser 获取用户数据并返回到页面
   async showUserInfo(req, res, next) {
     try {
-      const { uuid } = req.query;
+      const { uuid } = req.auth;
       if (!uuid) {
         errorJson(res, { message: "用户id不能为空" });
         return;
