@@ -11,7 +11,9 @@ const userController = {
   // showUser 获取用户数据并返回到页面
   async showUser(req, res, next) {
     try {
-      const userData = await User.all("name", "uuid");
+      const { uuid } = req.auth;
+      const { itself } = req.query;
+      const userData = await User.all(itself ? null : uuid, "name", "uuid");
       successJson(res, {
         data: userData
       });
@@ -34,7 +36,7 @@ const userController = {
         "language",
         "themeColor"
       );
-      const [data] = userData
+      const [data] = userData;
       if (!data) {
         errorJson(res, { message: "用户为空" });
         return;
