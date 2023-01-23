@@ -95,20 +95,21 @@ module.exports = {
       },
       {
         test: /.(png|jpg|jpeg|gif)$/, // 匹配图片文件
+        use: ['file-loader'],
         generator: {
           filename: "static/images/[name].[contenthash:8][ext]" // 加上[contenthash:8]
         }
       },
       {
         test: /.(woff2?|eot|ttf|otf)$/, // 匹配字体文件
-        // ...
+        use: ['file-loader'],
         generator: {
           filename: "static/fonts/[name].[contenthash:8][ext]" // 加上[contenthash:8]
         }
       },
       {
         test: /.(mp4|webm|ogg|mp3|wav|flac|aac)$/, // 匹配媒体文件
-        // ...
+        use: ['file-loader'],
         generator: {
           filename: "static/media/[name].[contenthash:8][ext]" // 加上[contenthash:8]
         }

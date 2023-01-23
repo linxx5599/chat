@@ -6,5 +6,6 @@ export default {
   lang: "language",
   setting: "setting",
   themeColor: "Theme color",
-  loading: "Loading..."
+  loading: "Loading...",
+  search: "search"
 }

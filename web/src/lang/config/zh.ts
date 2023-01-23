@@ -6,5 +6,6 @@ export default {
   lang: "语言",
   setting: "设置",
   themeColor:"主题色",
-  loading: "加载中..."
+  loading: "加载中...",
+  search: "搜索"
 }

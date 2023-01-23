@@ -8,6 +8,12 @@ const userApi: T.UserApi = {
       url: "/getUser",
       method: "get"
     });
+  },
+  getUserInfo() {
+    return request({
+      url: "/getUserInfo",
+      method: "get"
+    });
   }
 };
 
