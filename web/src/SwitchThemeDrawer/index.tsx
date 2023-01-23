@@ -34,7 +34,7 @@ const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
 
   useEffect(() => {
     variableCss(token);
-  }, [color, lang]);
+  }, [color]);
 
   useMemo(() => {
     !open && visible && setVisible(false);
