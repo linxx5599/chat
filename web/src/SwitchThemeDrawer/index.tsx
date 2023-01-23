@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 import { theme, Button, Descriptions, Select } from "antd";
 
 import { useTranslation } from "react-i18next";
@@ -48,6 +50,11 @@ const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
     langJs();
     open && setOpen(false);
   };
+
+  const location = useLocation();
+  if (location.pathname === "/login") {
+    return <></>;
+  }
   return (
     <div className={`${style.themeSettingBox} ${open ? style.open : ""}`}>
       <div className={style.themeSetting} onClick={settingClick}>

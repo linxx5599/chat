@@ -3,7 +3,7 @@ import { Navigate, useRoutes, useLocation } from "react-router-dom";
 
 import router from "@/router";
 import { getToken } from "@/utils/auth";
-
+import { Watermark } from "antd";
 
 const AuthRoute: React.FC = () => {
   const ReactView = useRoutes(router);
@@ -12,7 +12,13 @@ const AuthRoute: React.FC = () => {
   if (!hasToken && location.pathname !== "/login") {
     return <Navigate to="/login" />;
   }
-  return <>{ReactView}</>;
+  return (
+    <>
+      <Watermark content="node.js + express + mysql + react18">
+        {ReactView}
+      </Watermark>
+    </>
+  );
 };
 
 export default AuthRoute;

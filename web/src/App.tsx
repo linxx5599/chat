@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import enUS from "antd/locale/en_US";
 import zhCN from "antd/locale/zh_CN";
-import { ConfigProvider, Watermark, theme } from "antd";
+import { ConfigProvider, theme } from "antd";
 import AuthRoute from "./AuthRoute";
 import SwitchSettingDrawer from "./SwitchThemeDrawer";
 
@@ -50,9 +50,7 @@ const App: React.FC = () => {
         }
       }}
     >
-      <Watermark content="node.js + express + mysql + react18">
-        <AuthRoute />
-      </Watermark>
+      <AuthRoute />
       <SwitchSettingDrawer
         locale={locale}
         switchLang={switchLang}
