@@ -1,4 +1,4 @@
-const createError = require("http-errors");
+const http = require("http");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -15,6 +15,36 @@ const bodyParser = require("body-parser");
 const { expressjwt } = require("express-jwt");
 const { JWT_SELECT } = require("./utils/config");
 const app = express();
+const io = require("socket.io");
+const dayjs = require("dayjs");
+
+const server = http.createServer((request, response) => {
+  response.writeHead(200, { "Content-Type": "text/html" });
+  if (request.url == "/") {
+    fs.readFile("./index.html", (error, data) => {
+      if (error) return console.log(error);
+      response.end(data.toString("utf8"));
+    });
+  } else {
+    response.end("<html>error</html>");
+  }
+});
+
+server.listen(3001);
+
+const socket = io(server);
+socket.on("connection", (connect) => {
+  connect.emit("message", []);
+  connect.on("send-message", (user, message) => {
+    const createTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
+    chatList.push({
+      user,
+      message,
+      createTime
+    });
+    connect.emit("message", []);
+  });
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
