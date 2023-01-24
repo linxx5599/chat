@@ -1,10 +1,11 @@
 import React from "react";
 import style from "./index.module.less";
 import { Input, Button } from "antd";
+import { userT } from "../../types";
 import Icon from "@/common/components/Icon";
+import ChatBoxMsg from "../ChatBoxMsg";
 // 表情卡片 Emoticons
 import Emoticons from "../Emoticons";
-import { userT } from "../../types";
 
 interface IProps {
   checkUserInfo: userT | null;
@@ -32,7 +33,9 @@ const ChatMsg: React.FC<IProps> = ({
       <div className={style["chat-content-right-top"]}>
         <div>{checkUserInfo && checkUserInfo.name}</div>
       </div>
-      <div className={style["chat-content-right-content"]}></div>
+      <div className={style["chat-content-right-content"]}>
+        <ChatBoxMsg checkUserInfo={checkUserInfo} />
+      </div>
       <div
         className={`${style["chat-content-right-footer"]} ${
           emoticonsOpen ? style["check"] : ""

@@ -9,8 +9,8 @@ import { Input } from "antd";
 import SettingLeft from "./child/SettingLeft";
 // 左侧用户列表 UserList
 import UserList from "./child/UserList";
-//聊天信息 ChatMsg
-import ChatMsg from "./child/ChatMsg";
+//聊天信息 ChatBox
+import ChatBox from "./child/ChatBox";
 //空图标 Empty
 import Empty from "./child/Empty";
 
@@ -78,7 +78,7 @@ const Chat: React.FC = () => {
           </div>
           <div className={style["chat-content-right"]}>
             {checkUserInfo ? (
-              <ChatMsg
+              <ChatBox
                 checkUserInfo={checkUserInfo}
                 emoticonsOpen={emoticonsOpen}
                 setEmoticonsOpen={setEmoticonsOpen}
