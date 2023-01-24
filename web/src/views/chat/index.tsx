@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import { userApi } from "@/api";
 import { userT } from "./types";
 
-import { Input, Button } from "antd";
-import Icon from "@/common/components/Icon";
+import { Input } from "antd";
 // 左侧在头像、设置 SettingLeft
 import SettingLeft from "./child/SettingLeft";
 // 左侧用户列表 UserList
