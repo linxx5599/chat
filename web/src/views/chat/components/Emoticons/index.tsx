@@ -32,14 +32,12 @@ const Emoticons: React.FC<IProps> = ({
   });
   let textAreaEl: HTMLTextAreaElement | null;
 
-  const emojiClick = ({ target }: any) => {
-    if (![...target.classList].includes(style["emoji-span"])) return;
+  const textAreaElFocus = (target?: Element) => {
     if (!textAreaEl) {
       textAreaEl = document.querySelector(".chat-content-right-footer-edit");
     }
-
     if (textAreaEl) {
-      const text = target.innerHTML as string;
+      const text = target ? (target.innerHTML as string) : "";
       if (textAreaVal.length >= 1000) return;
       const { selectionEnd } = insertAtCursor(textAreaEl, text, {
         targetVal: textAreaVal,
@@ -53,6 +51,10 @@ const Emoticons: React.FC<IProps> = ({
         }, 0);
       }
     }
+  };
+  const emojiClick = ({ target }: any) => {
+    if (![...target.classList].includes(style["emoji-span"])) return;
+    textAreaElFocus(target);
   };
   return (
     <>
@@ -78,7 +80,9 @@ const Emoticons: React.FC<IProps> = ({
           </div>
         }
         open={open}
-        onOpenChange={(newOpen: boolean) => setOpen(newOpen)}
+        onOpenChange={(newOpen: boolean) => {
+          setOpen(newOpen);
+        }}
       >
         {children}
       </Popover>

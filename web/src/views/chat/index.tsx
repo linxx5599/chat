@@ -37,6 +37,11 @@ const Chat: React.FC = () => {
     const uuid = target.dataset.uuid;
     const info = userData.find((i) => i.uuid === uuid) || null;
     setCheckUserInfo(info);
+
+    const textAreaEl: HTMLTextAreaElement | null = document.querySelector(
+      ".chat-content-right-footer-edit"
+    );
+    textAreaEl && textAreaEl.focus();
   };
   const getUserInfo = () => {
     userApi.getUserInfo().then((result) => {
@@ -77,11 +82,8 @@ const Chat: React.FC = () => {
                   {userInfo && userInfo.name}
                 </div>
               </div>
-              <div
-                className={style["chat-content-setting-bottom"]}
-                onClick={logout}
-              >
-                <Icon name="logout" />
+              <div className={style["chat-content-setting-bottom"]}>
+                <Icon onClick={logout} name="logout" />
               </div>
             </div>
             <div className={style["chat-content-chat"]}>
@@ -133,31 +135,61 @@ const Chat: React.FC = () => {
             </div>
           </div>
           <div className={style["chat-content-right"]}>
-            <div className={style["chat-content-right-top"]}>
-              <div>{checkUserInfo && checkUserInfo.name}</div>
-            </div>
-            <div className={style["chat-content-right-content"]}></div>
-            <div className={style["chat-content-right-footer"]}>
-              <div className={style["chat-content-right-footer-top"]}>
-                <Emoticons
-                  textAreaVal={textAreaVal}
-                  setTextAreaVal={setTextAreaVal}
-                  open={emoticonsOpen}
-                  setOpen={setEmoticonsOpen}
+            {checkUserInfo ? (
+              <>
+                <div className={style["chat-content-right-top"]}>
+                  <div>{checkUserInfo.name}</div>
+                </div>
+                <div className={style["chat-content-right-content"]}></div>
+                <div
+                  className={`${style["chat-content-right-footer"]} ${
+                    emoticonsOpen ? style["check"] : ""
+                  }`}
                 >
-                  <Icon onClick={emoticonsClick} name="smilingFace"></Icon>
-                </Emoticons>
-              </div>
-              <Input.TextArea
-                maxLength={1000}
-                value={textAreaVal}
-                onChange={(e) => setTextAreaVal(e.target.value)}
-                className={
-                  style["chat-content-right-footer-edit"] +
-                  " chat-content-right-footer-edit"
-                }
-              />
-            </div>
+                  <div className={style["chat-content-right-footer-top"]}>
+                    <Emoticons
+                      textAreaVal={textAreaVal}
+                      setTextAreaVal={setTextAreaVal}
+                      open={emoticonsOpen}
+                      setOpen={setEmoticonsOpen}
+                    >
+                      <Icon onClick={emoticonsClick} name="smilingFace"></Icon>
+                    </Emoticons>
+                  </div>
+                  <Input.TextArea
+                    maxLength={1000}
+                    value={textAreaVal}
+                    onChange={(e) => setTextAreaVal(e.target.value)}
+                    className={
+                      style["chat-content-right-footer-edit"] +
+                      " chat-content-right-footer-edit"
+                    }
+                    autoFocus
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}
+                >
+                  <Icon
+                    name="chat"
+                    style={{
+                      width: "15%",
+                      height: "15%",
+                      fill: "rgba(255,255,255,0.7)"
+                    }}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

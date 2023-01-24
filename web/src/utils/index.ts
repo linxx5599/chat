@@ -30,7 +30,6 @@ export function insertAtCursor(
   }
 ): { selectionStart?: any; selectionEnd?: any } {
   const text = decode(myValue);
-  if (!text && text != "0") return {};
   if (myField.selectionStart || myField.selectionStart == 0) {
     const startPos = myField.selectionStart;
     const endPos = myField.selectionEnd;
