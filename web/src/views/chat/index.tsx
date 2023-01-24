@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from "react";
 import style from "./index.module.less";
-import { Input, Image, Button } from "antd";
-import { userApi } from "@/api";
-import Icon from "@/common/components/Icon";
-import Emoticons from "./child/Emoticons";
 import { useTranslation } from "react-i18next";
-import { removeToken } from "@/utils/auth";
-import { useNavigate } from "react-router-dom";
+import { userApi } from "@/api";
+import { userT } from "./types";
 
-interface userT {
-  name: string;
-  uuid: string;
-}
+import { Input, Button } from "antd";
+import Icon from "@/common/components/Icon";
+// 左侧在头像、设置 SettingLeft
+import SettingLeft from "./child/SettingLeft";
+// 左侧用户列表 UserList
+import UserList from "./child/UserList";
+//聊天信息 ChatMsg
+import ChatMsg from "./child/ChatMsg";
+//空图标 Empty
+import Empty from "./child/Empty";
+
 const Chat: React.FC = () => {
-  const navigate = useNavigate();
-
   const { t } = useTranslation();
   const placeholder = t("search");
-
-  const [emoticonsOpen, setEmoticonsOpen] = useState(false);
 
   const [userData, setUserData] = useState<userT[]>([]);
 
   const [userInfo, setUserInfo] = useState<userT | null>(null);
 
   const [checkUserInfo, setCheckUserInfo] = useState<userT | null>(null);
+
+  const [emoticonsOpen, setEmoticonsOpen] = useState<boolean>(false);
+
+  const [textAreaVal, setTextAreaVal] = useState("");
 
   const textAreaElFocus = (): void => {
     const textAreaEl: HTMLTextAreaElement | null = document.querySelector(
@@ -33,16 +36,6 @@ const Chat: React.FC = () => {
     textAreaEl && textAreaEl.focus();
   };
 
-  const chatClick = ({ target }: any) => {
-    if (![...target.classList].includes(style["chat-content-chat-list-item"])) {
-      return;
-    }
-    const uuid = target.dataset.uuid;
-    const info = userData.find((i) => i.uuid === uuid) || null;
-    setCheckUserInfo(info);
-
-    textAreaElFocus();
-  };
   const getUserInfo = () => {
     userApi.getUserInfo().then((result) => {
       setUserInfo(result.data);
@@ -60,145 +53,42 @@ const Chat: React.FC = () => {
     getUser();
   }, []);
 
-  const user = require("@/assets/images/user.png").default;
-  // const bg = require("@/assets/images/bg.png").default;
-  const bg = "";
-
-  const logout = () => {
-    removeToken();
-    navigate("/login");
-  };
-
-  const [textAreaVal, setTextAreaVal] = useState("");
-
-  const send = () => {
-    console.log(textAreaVal, "send");
-    setTextAreaVal("");
-    textAreaElFocus();
-  };
+  const bg = require("@/assets/images/bg.png").default;
 
   return (
     <>
       <div className={style["chat"]} style={{ backgroundImage: `url(${bg})` }}>
         <div className={style["chat-content"]}>
           <div className={style["chat-content-left"]}>
-            <div className={style["chat-content-setting"]}>
-              <div className={style["chat-content-setting-top"]}>
-                <Image width={35} src={user} />
-                <div className={style["chat-content-setting-userName"]}>
-                  {userInfo && userInfo.name}
-                </div>
-              </div>
-              <div className={style["chat-content-setting-bottom"]}>
-                <Icon onClick={logout} name="logout" />
-              </div>
-            </div>
+            {/* 左侧在头像、设置 */}
+            <SettingLeft userInfo={userInfo} />
+
             <div className={style["chat-content-chat"]}>
               <div className={style["chat-content-chat-top"]}>
                 <Input placeholder={placeholder} />
               </div>
-              <div
-                className={style["chat-content-chat-list"]}
-                onClick={chatClick}
-              >
-                {userData.map((item) => {
-                  return (
-                    <div
-                      className={`${style["chat-content-chat-list-item"]} ${
-                        checkUserInfo && checkUserInfo.uuid === item.uuid
-                          ? "check"
-                          : ""
-                      }`}
-                      key={item.uuid}
-                      data-uuid={item.uuid}
-                    >
-                      <div
-                        className={style["chat-content-chat-list-item-left"]}
-                      >
-                        <img src={user} />
-                      </div>
-                      <div
-                        className={style["chat-content-chat-list-item-right"]}
-                      >
-                        <div
-                          className={
-                            style["chat-content-chat-list-item-right-name"]
-                          }
-                        >
-                          {item.name}
-                        </div>
-                        <div
-                          className={
-                            style["chat-content-chat-list-item-right-text"]
-                          }
-                        >
-                          12321312
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+
+              {/* 左侧用户列表 */}
+              <UserList
+                userData={userData}
+                checkUserInfo={checkUserInfo}
+                setCheckUserInfo={setCheckUserInfo}
+                textAreaElFocus={textAreaElFocus}
+              />
             </div>
           </div>
           <div className={style["chat-content-right"]}>
             {checkUserInfo ? (
-              <>
-                <div className={style["chat-content-right-top"]}>
-                  <div>{checkUserInfo.name}</div>
-                </div>
-                <div className={style["chat-content-right-content"]}></div>
-                <div
-                  className={`${style["chat-content-right-footer"]} ${
-                    emoticonsOpen ? style["check"] : ""
-                  }`}
-                >
-                  <div className={style["chat-content-right-footer-top"]}>
-                    <Emoticons
-                      textAreaVal={textAreaVal}
-                      setTextAreaVal={setTextAreaVal}
-                      open={emoticonsOpen}
-                      setOpen={setEmoticonsOpen}
-                    >
-                      <Icon name="smilingFace"></Icon>
-                    </Emoticons>
-
-                    <Button onClick={send} type="primary" size="small">
-                      发送
-                    </Button>
-                  </div>
-                  <Input.TextArea
-                    value={textAreaVal}
-                    onChange={(e) => setTextAreaVal(e.target.value)}
-                    className={
-                      style["chat-content-right-footer-edit"] +
-                      " chat-content-right-footer-edit"
-                    }
-                    autoFocus
-                  />
-                </div>
-              </>
+              <ChatMsg
+                checkUserInfo={checkUserInfo}
+                emoticonsOpen={emoticonsOpen}
+                setEmoticonsOpen={setEmoticonsOpen}
+                textAreaVal={textAreaVal}
+                setTextAreaVal={setTextAreaVal}
+                textAreaElFocus={textAreaElFocus}
+              />
             ) : (
-              <>
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}
-                >
-                  <Icon
-                    name="chat"
-                    style={{
-                      width: "15%",
-                      height: "15%",
-                      fill: "var(--colorPrimary)"
-                    }}
-                  />
-                </div>
-              </>
+              <Empty />
             )}
           </div>
         </div>
