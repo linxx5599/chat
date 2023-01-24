@@ -56,6 +56,7 @@ const Emoticons: React.FC<IProps> = ({
     if (![...target.classList].includes(style["emoji-span"])) return;
     textAreaElFocus(target);
   };
+
   return (
     <>
       <Popover
@@ -63,19 +64,7 @@ const Emoticons: React.FC<IProps> = ({
         trigger="click"
         overlayClassName={style["emoji"]}
         content={
-          <div
-            style={{
-              width: "405px",
-              height: "200px",
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "8px",
-              overflowY: "auto",
-              padding: "8px",
-              userSelect: "none"
-            }}
-            onClick={emojiClick}
-          >
+          <div className={style["emoji-war"]} onClick={emojiClick}>
             {content}
           </div>
         }

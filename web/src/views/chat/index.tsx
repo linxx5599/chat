@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import style from "./index.module.less";
-import { Input, Image } from "antd";
+import { Input, Image, Button } from "antd";
 import { userApi } from "@/api";
 import Icon from "@/common/components/Icon";
-import Emoticons from "./components/Emoticons";
+import Emoticons from "./child/Emoticons";
 import { useTranslation } from "react-i18next";
 import { removeToken } from "@/utils/auth";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,13 @@ const Chat: React.FC = () => {
 
   const [checkUserInfo, setCheckUserInfo] = useState<userT | null>(null);
 
+  const textAreaElFocus = (): void => {
+    const textAreaEl: HTMLTextAreaElement | null = document.querySelector(
+      ".chat-content-right-footer-edit"
+    );
+    textAreaEl && textAreaEl.focus();
+  };
+
   const chatClick = ({ target }: any) => {
     if (![...target.classList].includes(style["chat-content-chat-list-item"])) {
       return;
@@ -34,10 +41,7 @@ const Chat: React.FC = () => {
     const info = userData.find((i) => i.uuid === uuid) || null;
     setCheckUserInfo(info);
 
-    const textAreaEl: HTMLTextAreaElement | null = document.querySelector(
-      ".chat-content-right-footer-edit"
-    );
-    textAreaEl && textAreaEl.focus();
+    textAreaElFocus();
   };
   const getUserInfo = () => {
     userApi.getUserInfo().then((result) => {
@@ -57,7 +61,8 @@ const Chat: React.FC = () => {
   }, []);
 
   const user = require("@/assets/images/user.png").default;
-  const bg = require("@/assets/images/bg.png").default;
+  // const bg = require("@/assets/images/bg.png").default;
+  const bg = "";
 
   const logout = () => {
     removeToken();
@@ -65,6 +70,12 @@ const Chat: React.FC = () => {
   };
 
   const [textAreaVal, setTextAreaVal] = useState("");
+
+  const send = () => {
+    console.log(textAreaVal, "send");
+    setTextAreaVal("");
+    textAreaElFocus();
+  };
 
   return (
     <>
@@ -151,9 +162,12 @@ const Chat: React.FC = () => {
                     >
                       <Icon name="smilingFace"></Icon>
                     </Emoticons>
+
+                    <Button onClick={send} type="primary" size="small">
+                      发送
+                    </Button>
                   </div>
                   <Input.TextArea
-                    maxLength={1000}
                     value={textAreaVal}
                     onChange={(e) => setTextAreaVal(e.target.value)}
                     className={
@@ -180,7 +194,7 @@ const Chat: React.FC = () => {
                     style={{
                       width: "15%",
                       height: "15%",
-                      fill: "rgba(255,255,255,0.7)"
+                      fill: "var(--colorPrimary)"
                     }}
                   />
                 </div>
