@@ -56,6 +56,7 @@ const Emoticons: React.FC<IProps> = ({
   return (
     <>
       <Popover
+        placement="topLeft"
         trigger="click"
         overlayClassName={style["emoji"]}
         content={
