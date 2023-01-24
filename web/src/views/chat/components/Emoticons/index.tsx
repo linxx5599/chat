@@ -84,7 +84,7 @@ const Emoticons: React.FC<IProps> = ({
           setOpen(newOpen);
         }}
       >
-        {children}
+        <>{children}</>
       </Popover>
     </>
   );

@@ -20,10 +20,6 @@ const Chat: React.FC = () => {
 
   const [emoticonsOpen, setEmoticonsOpen] = useState(false);
 
-  const emoticonsClick = () => {
-    console.log(51);
-  };
-
   const [userData, setUserData] = useState<userT[]>([]);
 
   const [userInfo, setUserInfo] = useState<userT | null>(null);
@@ -153,7 +149,7 @@ const Chat: React.FC = () => {
                       open={emoticonsOpen}
                       setOpen={setEmoticonsOpen}
                     >
-                      <Icon onClick={emoticonsClick} name="smilingFace"></Icon>
+                      <Icon name="smilingFace"></Icon>
                     </Emoticons>
                   </div>
                   <Input.TextArea

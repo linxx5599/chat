@@ -62,8 +62,8 @@ const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
       </div>
       <div className={style.themeSettingItems}>
         <div className="title">{t("setting")}</div>
-        <Descriptions>
-          <Descriptions.Item span={3} label={t("lang")}>
+        <Descriptions column={1}>
+          <Descriptions.Item label={t("lang")}>
             <Select
               style={{ width: 100 }}
               value={lang}
@@ -74,7 +74,7 @@ const SwitchSettingDrawer: React.FC<IProps> = (props: any) => {
               ]}
             />
           </Descriptions.Item>
-          <Descriptions.Item span={3} label={t("themeColor")}>
+          <Descriptions.Item label={t("themeColor")}>
             <ColorPicker
               color={color}
               setColor={setColor}
