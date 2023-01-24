@@ -21,6 +21,13 @@ module.exports = merge(baseConfig, {
         //是否跨域
         pathRewrite: { "^/api": "" },
         ws: false
+      },
+      "/socket": {
+        target: "http://192.168.11.180:3001/",
+        changeOrigin: true,
+        //是否跨域
+        pathRewrite: { "^/socket": "" },
+        ws: false
       }
     }
   },
