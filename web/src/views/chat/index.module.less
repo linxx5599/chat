@@ -27,16 +27,19 @@
           flex-direction: column;
           align-items: center;
           padding-top: 6px;
-          > img {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
+          :global(.ant-image-mask) {
+            &:hover {
+              opacity: 0;
+            }
           }
           .chat-content-setting-userName {
             margin-top: 6px;
             font-size: 12px;
             color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            padding: 0 8px;
           }
         }
         .chat-content-setting-bottom {
@@ -51,7 +54,6 @@
             margin-bottom: 12px;
             cursor: pointer;
             transition: all 0.5s;
-            border-radius: 50%;
             &:hover {
               fill: rgba(255, 255, 255, 0.9);
             }
@@ -100,7 +102,6 @@
               img {
                 width: 100%;
                 height: 100%;
-                border-radius: 50%;
               }
             }
             .chat-content-chat-list-item-right {
@@ -112,10 +113,14 @@
                 color: #fff;
                 font-size: 14px;
                 padding-bottom: 4px;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
               .chat-content-chat-list-item-right-text {
                 font-size: 12px;
                 color: #d6d6d6;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
             }
           }
@@ -143,7 +148,39 @@
       }
       .chat-content-right-content {
         padding: 0 12px;
-        height: calc(100% - 46px);
+        height: calc(100% - 196px);
+      }
+      .chat-content-right-footer {
+        height: 150px;
+        background: #fff;
+        .chat-content-right-footer-top {
+          padding: 0 12px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          :global(.icon) {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            fill: rgba(55, 48, 48, 0.5);
+            transition: all 0.5s;
+            &:hover {
+              fill: rgba(55, 48, 48, 1);
+            }
+          }
+        }
+
+        .chat-content-right-footer-edit {
+          height: calc(100% - 44px);
+          outline: none;
+          border: none;
+          padding-left: 16px;
+          overflow-y: auto;
+          resize: none;
+          &:focus {
+            box-shadow: none;
+          }
+        }
       }
     }
   }

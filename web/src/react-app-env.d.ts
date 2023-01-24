@@ -66,3 +66,5 @@ declare module "*.module.less" {
 }
 
 declare module "react-color";
+
+declare module "react-emotor";

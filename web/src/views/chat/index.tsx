@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
 import style from "./index.module.less";
-import { Input } from "antd";
+import { Input, Image } from "antd";
 import { userApi } from "@/api";
 import Icon from "@/common/components/Icon";
-import ImageModal from "./components/ImageModal";
+import Emoticons from "./components/Emoticons";
 import { useTranslation } from "react-i18next";
+import { removeToken } from "@/utils/auth";
+import { useNavigate } from "react-router-dom";
 
 interface userT {
   name: string;
   uuid: string;
 }
 const Chat: React.FC = () => {
+  const navigate = useNavigate();
+
   const { t } = useTranslation();
   const placeholder = t("search");
+
+  const [emoticonsOpen, setEmoticonsOpen] = useState(false);
+
+  const emoticonsClick = () => {
+    console.log(51);
+  };
 
   const [userData, setUserData] = useState<userT[]>([]);
 
@@ -48,8 +58,12 @@ const Chat: React.FC = () => {
   const user = require("@/assets/images/user.png").default;
   const bg = require("@/assets/images/bg.png").default;
 
-  //ImageModal
-  const [open, setOpen] = useState(false);
+  const logout = () => {
+    removeToken();
+    navigate("/login");
+  };
+
+  const [textAreaVal, setTextAreaVal] = useState("");
 
   return (
     <>
@@ -58,18 +72,21 @@ const Chat: React.FC = () => {
           <div className={style["chat-content-left"]}>
             <div className={style["chat-content-setting"]}>
               <div className={style["chat-content-setting-top"]}>
-                <img src={user} onClick={() => setOpen(true)} />
+                <Image width={35} src={user} />
                 <div className={style["chat-content-setting-userName"]}>
                   {userInfo && userInfo.name}
                 </div>
               </div>
-              <div className={style["chat-content-setting-bottom"]}>
+              <div
+                className={style["chat-content-setting-bottom"]}
+                onClick={logout}
+              >
                 <Icon name="logout" />
               </div>
             </div>
             <div className={style["chat-content-chat"]}>
               <div className={style["chat-content-chat-top"]}>
-                <Input placeholder={placeholder}></Input>
+                <Input placeholder={placeholder} />
               </div>
               <div
                 className={style["chat-content-chat-list"]}
@@ -120,10 +137,29 @@ const Chat: React.FC = () => {
               <div>{checkUserInfo && checkUserInfo.name}</div>
             </div>
             <div className={style["chat-content-right-content"]}></div>
+            <div className={style["chat-content-right-footer"]}>
+              <div className={style["chat-content-right-footer-top"]}>
+                <Emoticons
+                  textAreaVal={textAreaVal}
+                  setTextAreaVal={setTextAreaVal}
+                  open={emoticonsOpen}
+                  setOpen={setEmoticonsOpen}
+                >
+                  <Icon onClick={emoticonsClick} name="smilingFace"></Icon>
+                </Emoticons>
+              </div>
+              <Input.TextArea
+                value={textAreaVal}
+                onChange={(e) => setTextAreaVal(e.target.value)}
+                className={
+                  style["chat-content-right-footer-edit"] +
+                  " chat-content-right-footer-edit"
+                }
+              />
+            </div>
           </div>
         </div>
       </div>
-      {open && <ImageModal open={open} setOpen={setOpen} src={user} />}
     </>
   );
 };
