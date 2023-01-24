@@ -40,6 +40,7 @@ const Emoticons: React.FC<IProps> = ({
 
     if (textAreaEl) {
       const text = target.innerHTML as string;
+      if (textAreaVal.length >= 1000) return;
       const { selectionEnd } = insertAtCursor(textAreaEl, text, {
         targetVal: textAreaVal,
         setTargetVal: setTextAreaVal

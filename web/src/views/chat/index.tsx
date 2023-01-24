@@ -149,6 +149,7 @@ const Chat: React.FC = () => {
                 </Emoticons>
               </div>
               <Input.TextArea
+                maxLength={1000}
                 value={textAreaVal}
                 onChange={(e) => setTextAreaVal(e.target.value)}
                 className={
