@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = (file) => { // flie为文件路径
   let fileName = path.join(__dirname, file);
   let data = fs.readFileSync(fileName, { encoding: 'utf8' })
-  console.log(data, "data");
   let d = data.replace(/\r/g, ',').replace(/\n/g, '') // 把换行和回车替换
   let arr = d.split(',').map(item => {
     return item.split('=')
