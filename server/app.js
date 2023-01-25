@@ -15,34 +15,23 @@ const bodyParser = require("body-parser");
 const { expressjwt } = require("express-jwt");
 const { JWT_SELECT } = require("./utils/config");
 const app = express();
-const io = require("socket.io");
+const { Server: ioServer } = require("socket.io");
 const dayjs = require("dayjs");
 
-const server = http.createServer((request, response) => {
-  response.writeHead(200, { "Content-Type": "text/html" });
-  if (request.url == "/") {
-    fs.readFile("./index.html", (error, data) => {
-      if (error) return console.log(error);
-      response.end(data.toString("utf8"));
-    });
-  } else {
-    response.end("<html>error</html>");
+const server = http.createServer(app);
+
+// 创建实时连接
+const io = new ioServer(server, {
+  cors: {
+    origin: "*"
   }
 });
-
-server.listen(3001);
-
-const socket = io(server);
-socket.on("connection", (connect) => {
-  connect.emit("message", []);
-  connect.on("send-message", (user, message) => {
-    const createTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
-    chatList.push({
-      user,
-      message,
-      createTime
-    });
-    connect.emit("message", []);
+// 监听连接
+io.on("connection", (socket) => {
+  console.log(`⚡: ${socket.id} 用户已连接!`);
+  socket.emit("message", "message");
+  socket.on("disconnect", () => {
+    console.log("🔥: 一个用户已断开连接");
   });
 });
 
@@ -56,7 +45,7 @@ app.use(require("cors")());
 // unless指定哪些接口不需要访问权限，即白名单。
 app.use(
   expressjwt({ secret: JWT_SELECT, algorithms: ["HS256"] }).unless({
-    path: ["/login"]
+    path: ["/login", /io/, "/"]
   })
 );
 
@@ -65,7 +54,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
+// app.use("/", indexRouter);
 app.use("/getUserInfo", getUserInfoRouter);
 app.use("/getUser", getUserRouter);
 app.use("/insertUser", insertUser);
@@ -99,4 +88,4 @@ const _errorHandler = (err, req, res, next) => {
   });
 };
 app.use(_errorHandler);
-module.exports = app;
+module.exports = { server };
