@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import style from "./index.module.less";
 
 import { List, Image } from "antd";
 import VirtualList from "rc-virtual-list";
 import { userT } from "../../types";
 
+import { chatrecordApi } from "@/api";
+
 interface IProps {
   checkUserInfo: userT | null;
+  userInfo: userT | null;
 }
 interface UserItem {
+  time: string;
+  message: string;
   uuid: string;
   name: string;
   msg: string;
@@ -16,25 +21,24 @@ interface UserItem {
 
 const ContainerHeight = 400;
 
-const ChatBoxMsg: React.FC<IProps> = ({ checkUserInfo }) => {
+const ChatBoxMsg: React.FC<IProps> = ({ checkUserInfo, userInfo }) => {
   const user = require("@/assets/images/user.png").default;
 
-  const [chatData, setChatData] = useState<UserItem[]>([
-    { uuid: "1", name: "sd", msg: "呵呵" },
-    { uuid: "c980dc1acff3404087562281eec449ea", name: "sd", msg: "ggggggggff" }
-  ]);
+  const [chatData, setChatData] = useState<UserItem[]>([]);
 
-  const appendData = () => {
-    fetch("")
-      .then((res) => res.json())
-      .then((body) => {
-        setChatData(chatData.concat(body.results));
+  const getChats = (scroll?: boolean) => {
+    chatrecordApi
+      .getChats({ uuids: `${userInfo?.uuid},${checkUserInfo?.uuid}` })
+      .then((result) => {
+        const data = scroll ? chatData.concat(result.data) : result.data;
+        setChatData(data);
       });
   };
 
-  useEffect(() => {
-    // appendData();
-  }, []);
+  useMemo(() => {
+    if (!checkUserInfo) return;
+    getChats();
+  }, [checkUserInfo]);
 
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     const { currentTarget } = e;
@@ -42,7 +46,7 @@ const ChatBoxMsg: React.FC<IProps> = ({ checkUserInfo }) => {
       currentTarget.scrollHeight - currentTarget.scrollTop ===
       ContainerHeight
     ) {
-      appendData();
+      getChats(true);
     }
   };
 
@@ -54,16 +58,16 @@ const ChatBoxMsg: React.FC<IProps> = ({ checkUserInfo }) => {
           data={chatData}
           height={ContainerHeight}
           itemHeight={47}
-          itemKey="uuid"
+          itemKey="time"
           onScroll={onScroll}
         >
           {(item: UserItem) => (
-            <List.Item key={item.uuid}>
+            <List.Item key={item.uuid + item.time}>
               <List.Item.Meta
-                className={item.uuid === checkUserInfo?.uuid ? "self" : ""}
+                className={item.uuid === userInfo?.uuid ? "self" : ""}
                 avatar={<Image width={35} src={user} />}
                 title={<a href="https://ant.design">{item.name}</a>}
-                description={item.msg}
+                description={item.message}
               />
             </List.Item>
           )}

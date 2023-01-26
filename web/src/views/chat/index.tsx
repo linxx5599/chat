@@ -100,6 +100,7 @@ const Chat: React.FC = () => {
           <div className={style["chat-content-right"]}>
             {checkUserInfo ? (
               <ChatBox
+                userInfo={userInfo}
                 checkUserInfo={checkUserInfo}
                 emoticonsOpen={emoticonsOpen}
                 setEmoticonsOpen={setEmoticonsOpen}

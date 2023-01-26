@@ -9,6 +9,7 @@ import Emoticons from "../Emoticons";
 
 interface IProps {
   checkUserInfo: userT | null;
+  userInfo: userT | null;
   emoticonsOpen: boolean;
   setEmoticonsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   textAreaVal: string;
@@ -17,6 +18,7 @@ interface IProps {
 }
 const ChatMsg: React.FC<IProps> = ({
   checkUserInfo,
+  userInfo,
   emoticonsOpen,
   setEmoticonsOpen,
   textAreaVal,
@@ -32,10 +34,10 @@ const ChatMsg: React.FC<IProps> = ({
     <>
       <div className={style["chat-content-right-top"]}>
         <div>{checkUserInfo && checkUserInfo.name}</div>
-        <span>{checkUserInfo?.online ?'在线': '离线'}</span>
+        <span>{checkUserInfo?.online ? "在线" : "离线"}</span>
       </div>
       <div className={style["chat-content-right-content"]}>
-        <ChatBoxMsg checkUserInfo={checkUserInfo} />
+        <ChatBoxMsg userInfo={userInfo} checkUserInfo={checkUserInfo} />
       </div>
       <div
         className={`${style["chat-content-right-footer"]} ${
