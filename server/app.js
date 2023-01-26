@@ -6,11 +6,13 @@ const morgan = require("morgan");
 const logger = require("./logger");
 
 // const indexRouter = require("./routes/index");
-const getUserInfoRouter = require("./routes/getUserInfo");
-const getUserRouter = require("./routes/getUser");
-const insertUser = require("./routes/insertUser");
-const loginRouter = require("./routes/login");
-const usersRouter = require("./routes/users");
+const getUserInfoRouter = require("./routes/user/getUserInfo");
+const getUserRouter = require("./routes/user/getUser");
+const insertUser = require("./routes/user/insertUser");
+const loginRouter = require("./routes/user/login");
+
+const chatsRouter = require("./routes/chatrecord/chats");
+
 const bodyParser = require("body-parser");
 const { expressjwt } = require("express-jwt");
 const { JWT_SELECT } = require("./utils/config");
@@ -42,7 +44,8 @@ app.use("/getUserInfo", getUserInfoRouter);
 app.use("/getUser", getUserRouter);
 app.use("/insertUser", insertUser);
 app.use("/login", loginRouter);
-app.use("/users", usersRouter);
+
+app.use("/chats", chatsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

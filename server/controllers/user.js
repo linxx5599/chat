@@ -1,5 +1,5 @@
 // 引用用户模版数据
-const User = require("../models/user.js");
+const User = require("../models/user");
 const {
   getErrorMsg,
   successJson,
