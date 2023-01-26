@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import style from "./index.module.less";
 import { useTranslation } from "react-i18next";
 import { userApi } from "@/api";
@@ -25,6 +25,8 @@ const Chat: React.FC = () => {
 
   const [userInfo, setUserInfo] = useState<userT | null>(null);
 
+  const [socketMessages, setSocketMessages] = useState<userT | null>(null);
+
   const [checkUserInfo, setCheckUserInfo] = useState<userT | null>(null);
 
   const [emoticonsOpen, setEmoticonsOpen] = useState<boolean>(false);
@@ -37,11 +39,14 @@ const Chat: React.FC = () => {
     );
     textAreaEl && textAreaEl.focus();
   };
+  useMemo(() => {
+    console.log(socketMessages, 'socketMessages');
+  },[socketMessages])
 
   const getUserInfo = () => {
     userApi.getUserInfo().then((result) => {
       setUserInfo(result.data);
-      socketIo(result.data)
+      socketIo(result.data, { setSocketMessages });
     });
   };
 

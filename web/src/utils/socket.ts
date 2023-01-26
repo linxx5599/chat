@@ -1,22 +1,50 @@
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import io, { Socket } from "socket.io-client";
+import { getToken } from "./auth";
+
+export const socketConfig = {
+  socketUri: "http://localhost:3000",
+  types: {
+    //用户上线
+    NOTICE_USER_ONLINE: "notice-user-online",
+    //用户已登录
+    NOTICE_LOGGED_IN: "notice-logged-in",
+    //send-user 发送信息给服务端通知
+    SEND_USER: "send-user",
+  }
+}
 
 let isConnect = false;
-export default function (userInfo: any) {
+let socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
+export default function (userInfo: any, opts?: { setSocketMessages?: any }) {
   if (!userInfo || isConnect) return;
   isConnect = true;
-  const socketUri = "http://localhost:3000";
-  const socket: Socket<DefaultEventsMap, DefaultEventsMap> = io(socketUri);
+  disconnect();
+  const { setSocketMessages } = opts || {};
+  socket = io(socketConfig.socketUri);
   socket.on("connect", () => {
-    socket.emit("send-user", { uuid: userInfo.uuid });
-    console.log(socket.id, "监听客户端连接成功-connect");
+    if (!socket) return;
+    socket.emit(socketConfig.types.SEND_USER, { uuid: userInfo.uuid, token: getToken() });
+    console.log("%c监听客户端连接成功-connect", "color: red");
   });
-  socket.on("message", (data) => {
-    // 自定义一个事件来获取，服务端推送回来的消息列表
-    console.log(data, "222");
+  //用户上线
+  socket.on(socketConfig.types.NOTICE_USER_ONLINE, (data) => {
+    setSocketMessages?.({ type: socketConfig.types.NOTICE_USER_ONLINE, data });
+  });
+  //用户已登录
+  socket.on(socketConfig.types.NOTICE_LOGGED_IN, (data) => {
+    setSocketMessages?.({ type: socketConfig.types.NOTICE_LOGGED_IN, data });
   });
   socket.on("disconnect", () => {
-    console.log("断开连接");
+    console.log("%c服务端断开连接", "color: red");
+    setSocketMessages?.(null);
     isConnect = false;
   });
 }
+export const disconnect = () => {
+  if (socket) {
+    console.log("%c客户端主动断开连接", "color: red");
+    socket.disconnect();
+    socket = null;
+  }
+};
