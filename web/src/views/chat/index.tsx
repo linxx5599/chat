@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
 import { userApi } from "@/api";
 import { userT } from "./types";
 
+//socket.io
+import socketIo from "@/utils/socket";
+
 import { Input } from "antd";
 // 左侧在头像、设置 SettingLeft
 import SettingLeft from "./child/SettingLeft";
@@ -38,6 +41,7 @@ const Chat: React.FC = () => {
   const getUserInfo = () => {
     userApi.getUserInfo().then((result) => {
       setUserInfo(result.data);
+      socketIo(result.data)
     });
   };
 

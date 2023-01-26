@@ -9,7 +9,6 @@ import "@/style/index.less";
 //国际化
 import langJs from "@/lang";
 langJs();
-import "@/utils/socket";
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
 root.render(

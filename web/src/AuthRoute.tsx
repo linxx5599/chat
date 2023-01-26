@@ -4,6 +4,7 @@ import { Navigate, useRoutes, useLocation } from "react-router-dom";
 import router from "@/router";
 import { getToken } from "@/utils/auth";
 import { Watermark } from "antd";
+import { userApi } from "@/api";
 
 const AuthRoute: React.FC = () => {
   const ReactView = useRoutes(router);
