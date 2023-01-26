@@ -14,10 +14,10 @@ const usersRouter = require("./routes/users");
 const bodyParser = require("body-parser");
 const { expressjwt } = require("express-jwt");
 const { JWT_SELECT } = require("./utils/config");
-const socketIoFn = require("./socket");
+const { socketIoServer } = require("./socket");
 const app = express();
 const server = http.createServer(app);
-socketIoFn(server);
+socketIoServer(server);
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");

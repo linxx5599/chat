@@ -34,6 +34,15 @@
         padding-bottom: 4px;
         overflow: hidden;
         text-overflow: ellipsis;
+        position: relative;
+        :global(.icon) {
+          position: absolute;
+          right: 0px;
+          top: 0;
+          width: 20px;
+          height: 20px;
+          fill: green;
+        }
       }
       .chat-content-chat-list-item-right-text {
         font-size: 12px;

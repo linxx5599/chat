@@ -5,7 +5,7 @@ import { userApi } from "@/api";
 import { userT } from "./types";
 
 //socket.io
-import socketIo from "@/utils/socket";
+import socketIo, { socketConfig } from "@/utils/socket";
 
 import { Input } from "antd";
 // 左侧在头像、设置 SettingLeft
@@ -25,7 +25,10 @@ const Chat: React.FC = () => {
 
   const [userInfo, setUserInfo] = useState<userT | null>(null);
 
-  const [socketMessages, setSocketMessages] = useState<userT | null>(null);
+  const [socketMessages, setSocketMessages] = useState<{
+    type: string;
+    data: string;
+  } | null>(null);
 
   const [checkUserInfo, setCheckUserInfo] = useState<userT | null>(null);
 
@@ -39,9 +42,6 @@ const Chat: React.FC = () => {
     );
     textAreaEl && textAreaEl.focus();
   };
-  useMemo(() => {
-    console.log(socketMessages, 'socketMessages');
-  },[socketMessages])
 
   const getUserInfo = () => {
     userApi.getUserInfo().then((result) => {
@@ -58,8 +58,20 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     getUserInfo();
-    getUser();
   }, []);
+  useEffect(() => {
+    if (!socketMessages) return;
+    const { type, data } = socketMessages;
+    if (data !== "success") return;
+    const mapFn = {
+      //用户通知更新列表
+      [socketConfig.types.NOTICE_USER_ONLINE]() {
+        getUser();
+      }
+    };
+    mapFn[type]();
+    console.log(socketMessages, "socketMessages");
+  }, [socketMessages]);
 
   const bg = require("@/assets/images/bg.png").default;
 

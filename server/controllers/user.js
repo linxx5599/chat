@@ -7,6 +7,8 @@ const {
   getUuid
 } = require("../utils/index.js");
 const { sign } = require("../common/index.js");
+const { getOnlineData } = require("../socket");
+
 const userController = {
   // showUser 获取用户数据并返回到页面
   async showUser(req, res, next) {
@@ -14,6 +16,10 @@ const userController = {
       const { uuid } = req.auth;
       const { itself } = req.query;
       const userData = await User.all(itself ? null : uuid, "name", "uuid");
+      // userOnlineData
+      userData.forEach((item) => {
+        item.online = getOnlineData().some((i) => i.uuid === item.uuid);
+      });
       successJson(res, {
         data: userData
       });

@@ -1,6 +1,7 @@
 import React from "react";
 import style from "./index.module.less";
 import { userT } from "../../types";
+import Icon from "@/common/components/Icon";
 interface IProps {
   userData: userT[];
   checkUserInfo: userT | null;
@@ -47,6 +48,7 @@ const UserList: React.FC<IProps> = ({
                   className={style["chat-content-chat-list-item-right-name"]}
                 >
                   {item.name}
+                  {item.online ? <Icon name="online" />: <></>}
                 </div>
                 <div
                   className={style["chat-content-chat-list-item-right-text"]}

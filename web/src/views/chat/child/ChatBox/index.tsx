@@ -32,6 +32,7 @@ const ChatMsg: React.FC<IProps> = ({
     <>
       <div className={style["chat-content-right-top"]}>
         <div>{checkUserInfo && checkUserInfo.name}</div>
+        <span>{checkUserInfo?.online ?'在线': '离线'}</span>
       </div>
       <div className={style["chat-content-right-content"]}>
         <ChatBoxMsg checkUserInfo={checkUserInfo} />
