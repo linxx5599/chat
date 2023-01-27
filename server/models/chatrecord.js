@@ -12,6 +12,10 @@ class Chatrecord {
       .where("uuid", "in", uuids.split(","))
       .select(...arg);
   }
+  // 添加
+  sendChats(params) {
+    return knex(this.table).insert(params);
+  }
 }
 
 module.exports = new Chatrecord();

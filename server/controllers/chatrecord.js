@@ -17,6 +17,9 @@ const chatrecordController = {
     } catch (e) {
       errorJson(res, { data: getErrorMsg(e) });
     }
+  },
+  sendChats(params) {
+    return Chatrecord.sendChats(params);
   }
 };
 

@@ -7,7 +7,11 @@ import ChatBoxMsg from "../ChatBoxMsg";
 // 表情卡片 Emoticons
 import Emoticons from "../Emoticons";
 
+import { getIo, socketConfig } from "@/utils/socket";
+import { getUuid } from "@/utils";
+
 interface IProps {
+  chatBoxMsgKey: string;
   checkUserInfo: userT | null;
   userInfo: userT | null;
   emoticonsOpen: boolean;
@@ -17,6 +21,7 @@ interface IProps {
   textAreaElFocus: () => void;
 }
 const ChatMsg: React.FC<IProps> = ({
+  chatBoxMsgKey,
   checkUserInfo,
   userInfo,
   emoticonsOpen,
@@ -26,7 +31,13 @@ const ChatMsg: React.FC<IProps> = ({
   textAreaElFocus
 }) => {
   const send = () => {
-    console.log(textAreaVal, "send");
+    const io = getIo();
+    const params = {
+      message: textAreaVal,
+      name: userInfo?.name,
+      msgId: getUuid(34, "msg_")
+    };
+    io?.emit(socketConfig.types.SEND_USER_MSG, params);
     setTextAreaVal("");
     textAreaElFocus();
   };
@@ -37,7 +48,7 @@ const ChatMsg: React.FC<IProps> = ({
         <span>{checkUserInfo?.online ? "在线" : "离线"}</span>
       </div>
       <div className={style["chat-content-right-content"]}>
-        <ChatBoxMsg userInfo={userInfo} checkUserInfo={checkUserInfo} />
+        <ChatBoxMsg chatBoxMsgKey={chatBoxMsgKey} userInfo={userInfo} checkUserInfo={checkUserInfo} />
       </div>
       <div
         className={`${style["chat-content-right-footer"]} ${

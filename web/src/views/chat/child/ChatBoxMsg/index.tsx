@@ -4,14 +4,17 @@ import style from "./index.module.less";
 import { List, Image } from "antd";
 import VirtualList from "rc-virtual-list";
 import { userT } from "../../types";
+import dayjs from "dayjs";
 
 import { chatrecordApi } from "@/api";
 
 interface IProps {
+  chatBoxMsgKey: string;
   checkUserInfo: userT | null;
   userInfo: userT | null;
 }
 interface UserItem {
+  msgId: string;
   time: string;
   message: string;
   uuid: string;
@@ -21,7 +24,11 @@ interface UserItem {
 
 const ContainerHeight = 400;
 
-const ChatBoxMsg: React.FC<IProps> = ({ checkUserInfo, userInfo }) => {
+const ChatBoxMsg: React.FC<IProps> = ({
+  chatBoxMsgKey,
+  checkUserInfo,
+  userInfo
+}) => {
   const user = require("@/assets/images/user.png").default;
 
   const [chatData, setChatData] = useState<UserItem[]>([]);
@@ -39,6 +46,10 @@ const ChatBoxMsg: React.FC<IProps> = ({ checkUserInfo, userInfo }) => {
     if (!checkUserInfo) return;
     getChats();
   }, [checkUserInfo]);
+  useMemo(() => {
+    if (chatBoxMsgKey === "123456") return;
+    getChats();
+  }, [chatBoxMsgKey]);
 
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     const { currentTarget } = e;
@@ -58,15 +69,37 @@ const ChatBoxMsg: React.FC<IProps> = ({ checkUserInfo, userInfo }) => {
           data={chatData}
           height={ContainerHeight}
           itemHeight={47}
-          itemKey="time"
-          onScroll={onScroll}
+          itemKey="msgId"
         >
           {(item: UserItem) => (
-            <List.Item key={item.uuid + item.time}>
+            <List.Item key={item.msgId}>
               <List.Item.Meta
                 className={item.uuid === userInfo?.uuid ? "self" : ""}
                 avatar={<Image width={35} src={user} />}
-                title={<a href="https://ant.design">{item.name}</a>}
+                title={
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      flexDirection:
+                        item.uuid === userInfo?.uuid ? "row-reverse" : "unset"
+                    }}
+                  >
+                    <span>{item.name}</span>
+                    <span
+                      style={{
+                        color: "rgba(255, 255, 255, 0.8)",
+                        fontSize: "12px",
+                        marginRight: item.uuid === userInfo?.uuid ? "8px" : "0",
+                        marginLeft: item.uuid === userInfo?.uuid ? "0" : "8px"
+                      }}
+                    >
+                      {dayjs(item.time).format("M月D日") +
+                        " " +
+                        dayjs(item.time).format("HH:mm")}
+                    </span>
+                  </div>
+                }
                 description={item.message}
               />
             </List.Item>
