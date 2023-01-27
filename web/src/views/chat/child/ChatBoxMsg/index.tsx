@@ -40,7 +40,9 @@ const ChatBoxMsg: React.FC<IProps> = ({
         const data = scroll ? chatData.concat(result.data) : result.data;
         setChatData(data);
         setTimeout(() => {
-          const el = document.querySelector(".rc-virtual-list-holder");
+          const el = document.querySelector(
+            "." + style["chat-content-right-content-msg"]
+          );
           if (!el) return;
           const scrollTop = 88.73 * data.length - 400;
           if (scrollTop < 0) return;
@@ -70,48 +72,52 @@ const ChatBoxMsg: React.FC<IProps> = ({
 
   return (
     <>
-      <List>
-        <VirtualList
+      <List
+        className={style["chat-content-right-content-msg"]}
+        dataSource={chatData}
+        renderItem={(item: UserItem) => (
+          <List.Item key={item.msgId}>
+            <List.Item.Meta
+              className={item.uuid === userInfo?.uuid ? "self" : ""}
+              avatar={<Image width={35} src={user} />}
+              title={
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    flexDirection:
+                      item.uuid === userInfo?.uuid ? "row-reverse" : "unset"
+                  }}
+                >
+                  <span>{item.name}</span>
+                  <span
+                    style={{
+                      color: "rgba(255, 255, 255, 0.8)",
+                      fontSize: "12px",
+                      marginRight: item.uuid === userInfo?.uuid ? "8px" : "0",
+                      marginLeft: item.uuid === userInfo?.uuid ? "0" : "8px"
+                    }}
+                  >
+                    {dayjs(item.time).format("M月D日") +
+                      " " +
+                      dayjs(item.time).format("HH:mm")}
+                  </span>
+                </div>
+              }
+              description={item.message}
+            />
+          </List.Item>
+        )}
+      >
+        {/* <VirtualList
           className={style["chat-content-right-content-msg"]}
           data={chatData}
           height={ContainerHeight}
           itemHeight={47}
           itemKey="msgId"
-        >
-          {(item: UserItem) => (
-            <List.Item key={item.msgId}>
-              <List.Item.Meta
-                className={item.uuid === userInfo?.uuid ? "self" : ""}
-                avatar={<Image width={35} src={user} />}
-                title={
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      flexDirection:
-                        item.uuid === userInfo?.uuid ? "row-reverse" : "unset"
-                    }}
-                  >
-                    <span>{item.name}</span>
-                    <span
-                      style={{
-                        color: "rgba(255, 255, 255, 0.8)",
-                        fontSize: "12px",
-                        marginRight: item.uuid === userInfo?.uuid ? "8px" : "0",
-                        marginLeft: item.uuid === userInfo?.uuid ? "0" : "8px"
-                      }}
-                    >
-                      {dayjs(item.time).format("M月D日") +
-                        " " +
-                        dayjs(item.time).format("HH:mm")}
-                    </span>
-                  </div>
-                }
-                description={item.message}
-              />
-            </List.Item>
-          )}
-        </VirtualList>
+        > */}
+
+        {/* </VirtualList> */}
       </List>
     </>
   );
