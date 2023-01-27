@@ -6,10 +6,14 @@ class Chatrecord {
     this.table = props;
   }
   // 根据uuid 查找聊天记录
-  findAllChats(uuids, ...arg) {
-    if (!uuids) return knex(this.table).select(...arg);
+  findAllChats({ uuid, targetUuid }, ...arg) {
+    if (!targetUuid) return knex(this.table).select(...arg);
     return knex(this.table)
-      .where("uuid", "in", uuids.split(","))
+      .where((builder) =>
+        builder.where("uuid", uuid).andWhere("targetUuid", targetUuid)
+      ).orWhere((builder) =>
+        builder.where("uuid", targetUuid).andWhere("targetUuid", uuid)
+      )
       .select(...arg);
   }
   // 添加

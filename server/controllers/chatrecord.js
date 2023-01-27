@@ -5,12 +5,13 @@ const chatrecordController = {
   // findAllChats 获取用户聊天记录
   async findAllChats(req, res, next) {
     try {
-      const { uuids, isAll } = req.query;
-      if (!uuids && !isAll) {
-        errorJson(res, { data: getErrorMsg("用户id不能为空") });
+      const { targetUuid, isAll } = req.query;
+      const { uuid } = req.auth;
+      if (!targetUuid && !isAll) {
+        errorJson(res, { data: getErrorMsg("targetUuid不能为空") });
         return;
       }
-      const userData = await Chatrecord.findAllChats(uuids);
+      const userData = await Chatrecord.findAllChats({ uuid, targetUuid });
       successJson(res, {
         data: userData
       });

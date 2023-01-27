@@ -68,17 +68,18 @@ module.exports = {
         );
       });
 
-      socket.on(socketConfig.types.SEND_USER_MSG, async ({ message, msgId, name }) => {
+      socket.on(socketConfig.types.SEND_USER_MSG, async ({ message, msgId, name, targetUuid }) => {
         const params = {
           message,
           msgId,
           time: dayjs().format("YYYY-MM-DD HH:mm:ss"),
           uuid: socket.uuid,
-          name
+          name,
+          targetUuid
         }
         const [error] = await asyncFn(chatrecordController.sendChats(params))
         const status = error ? 'fail' : 'success'
-        io.emit(socketConfig.types.NOTICE_SEND_MSG, { status, msgId, uuid: socket.uuid })
+        io.emit(socketConfig.types.NOTICE_SEND_MSG, { status, msgId, uuid: socket.uuid, targetUuid })
       });
       socket.on("disconnect", () => {
         //在线用户列表中找出离线的用户索引
