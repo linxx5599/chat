@@ -35,7 +35,8 @@ const ChatMsg: React.FC<IProps> = ({
     const params = {
       message: textAreaVal,
       name: userInfo?.name,
-      msgId: getUuid(34, "msg_")
+      msgId: getUuid(34, "msg_"),
+      targetUuid: checkUserInfo?.uuid
     };
     io?.emit(socketConfig.types.SEND_USER_MSG, params);
     setTextAreaVal("");
