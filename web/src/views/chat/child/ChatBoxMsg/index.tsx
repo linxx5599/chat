@@ -35,7 +35,7 @@ const ChatBoxMsg: React.FC<IProps> = ({
 
   const getChats = (scroll?: boolean) => {
     chatrecordApi
-      .getChats({ uuids: `${userInfo?.uuid},${checkUserInfo?.uuid}` })
+      .getChats({ targetUuid: checkUserInfo?.uuid as string })
       .then((result) => {
         const data = scroll ? chatData.concat(result.data) : result.data;
         setChatData(data);

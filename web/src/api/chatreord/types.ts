@@ -1,7 +1,7 @@
 export interface ChatsParams {
-  uuids?: string;
+  targetUuid: string;
   isAll?: boolean;
 }
 export interface ChatrecordApi {
-  getChats: (params?: ChatsParams) => Promise<any>;
+  getChats: (params: ChatsParams) => Promise<any>;
 }
