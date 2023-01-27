@@ -104,7 +104,7 @@ const ChatBoxMsg: React.FC<IProps> = ({
                   </span>
                 </div>
               }
-              description={item.message}
+              description={decodeURIComponent(item.message)}
             />
           </List.Item>
         )}

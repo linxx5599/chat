@@ -31,15 +31,17 @@ const ChatMsg: React.FC<IProps> = ({
   textAreaElFocus
 }) => {
   const send = () => {
-    const io = getIo();
-    const params = {
-      message: textAreaVal,
-      name: userInfo?.name,
-      msgId: getUuid(34, "msg_"),
-      targetUuid: checkUserInfo?.uuid
-    };
-    io?.emit(socketConfig.types.SEND_USER_MSG, params);
-    setTextAreaVal("");
+    if (textAreaVal) {
+      const io = getIo();
+      const params = {
+        message: encodeURIComponent(textAreaVal),
+        name: userInfo?.name,
+        msgId: getUuid(34, "msg_"),
+        targetUuid: checkUserInfo?.uuid
+      };
+      io?.emit(socketConfig.types.SEND_USER_MSG, params);
+      setTextAreaVal("");
+    }
     textAreaElFocus();
   };
   return (
@@ -49,7 +51,11 @@ const ChatMsg: React.FC<IProps> = ({
         <span>{checkUserInfo?.online ? "在线" : "离线"}</span>
       </div>
       <div className={style["chat-content-right-content"]}>
-        <ChatBoxMsg chatBoxMsgKey={chatBoxMsgKey} userInfo={userInfo} checkUserInfo={checkUserInfo} />
+        <ChatBoxMsg
+          chatBoxMsgKey={chatBoxMsgKey}
+          userInfo={userInfo}
+          checkUserInfo={checkUserInfo}
+        />
       </div>
       <div
         className={`${style["chat-content-right-footer"]} ${
