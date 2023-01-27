@@ -30,7 +30,7 @@ app.use(require("cors")());
 // unless指定哪些接口不需要访问权限，即白名单。
 app.use(
   expressjwt({ secret: JWT_SELECT, algorithms: ["HS256"] }).unless({
-    path: ["/login"]
+    path: ["/login", "/insertUser"]
   })
 );
 
