@@ -4,4 +4,5 @@ export interface LoginParams {
 }
 export interface LoginApi {
   login: (params: LoginParams) => Promise<any>;
+  insertUser: (params: LoginParams) => Promise<any>;
 }

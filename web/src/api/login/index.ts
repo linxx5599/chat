@@ -9,6 +9,13 @@ const loginApi: T.LoginApi = {
       method: "post",
       data
     });
+  },
+  insertUser(data) {
+    return request({
+      url: "/insertUser",
+      method: "post",
+      data
+    });
   }
 };
 
