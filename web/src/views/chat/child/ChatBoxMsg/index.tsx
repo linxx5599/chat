@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import style from "./index.module.less";
 
 import { List, Image } from "antd";
@@ -39,6 +39,13 @@ const ChatBoxMsg: React.FC<IProps> = ({
       .then((result) => {
         const data = scroll ? chatData.concat(result.data) : result.data;
         setChatData(data);
+        setTimeout(() => {
+          const el = document.querySelector(".rc-virtual-list-holder");
+          if (!el) return;
+          const scrollTop = 88.73 * data.length - 400;
+          if (scrollTop < 0) return;
+          el.scrollTop = scrollTop;
+        });
       });
   };
 
