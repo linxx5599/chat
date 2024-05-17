@@ -1,0 +1,38 @@
+.chat-content-right-content-msg {
+  height: 100%;
+  overflow: auto;
+  :global(.ant-image-mask) {
+    &:hover {
+      opacity: 0;
+    }
+  }
+  :global(.ant-list-item) {
+    :global(.ant-list-item-meta) {
+      :global(.ant-list-item-meta-title) {
+        margin-bottom: 12px;
+      }
+      :global(.ant-list-item-meta-description) {
+        padding: 4px 8px;
+        background-color: #fff;
+        display: inline-block;
+        border-radius: 2px;
+        color: #000301;
+        max-width: calc(100% - 60px);
+        word-break: break-all;
+      }
+      &:global(.self) {
+        flex-direction: row-reverse;
+        :global(.ant-list-item-meta-avatar) {
+          margin-inline-start: 16px;
+          margin-inline-end: 0;
+        }
+        :global(.ant-list-item-meta-title) {
+          text-align: right;
+        }
+        :global(.ant-list-item-meta-description) {
+          float: right;
+        }
+      }
+    }
+  }
+}

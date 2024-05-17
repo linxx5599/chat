@@ -1,0 +1,36 @@
+
+
+
+.CustomColors {
+  position: relative;
+  line-height: 100%;
+  .swatch {
+    padding: 5px;
+    background: #fff;
+    border-radius: 1px;
+    box-shadow: 0 0 0 1px rgba(0;0;0;.1);
+    display: inline-block;
+    cursor: pointer;
+  }
+  .color {
+    width: 36px;
+    height: 14px;
+    border-radius: 2px;
+  }
+  .popover {
+    position: absolute;
+    // z-index: 2;
+  }
+  :global(.sketch-picker) {
+    width: 225px !important;
+    :global(.flexbox-fix label) {
+      text-align: left !important;
+      padding-top: 9px !important;
+      padding-left: 3px;
+      padding-bottom: 13px !important;
+      :global(#rc-editable-input-1) {
+        width: 87% !important;
+      }
+    }
+  }
+}
