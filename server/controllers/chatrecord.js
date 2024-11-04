@@ -3,7 +3,7 @@ const { getErrorMsg, successJson, errorJson } = require("../utils/index.js");
 
 const chatrecordController = {
   // findAllChats 获取用户聊天记录
-  async findAllChats(req, res, next) {
+  async findAllChats(req, res) {
     try {
       const { targetUuid, isAll } = req.query;
       const { uuid } = req.auth;
@@ -11,7 +11,7 @@ const chatrecordController = {
         errorJson(res, { data: getErrorMsg("targetUuid不能为空") });
         return;
       }
-      const userData = await Chatrecord.findAllChats({ uuid, targetUuid });
+      const userData = await Chatrecord.findAllChats({ uuid, targetUuid })
       successJson(res, {
         data: userData,
       });

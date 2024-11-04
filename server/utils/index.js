@@ -1,6 +1,17 @@
 module.exports = {
-  isObject(o) {
-    return Object.prototype.toString.call(o) === "[object Object]";
+  // 截取url?后面的参数
+  getQueryString(url) {
+    const str = url.split("?")[1];
+    if (!str) {
+      return {};
+    }
+    const arr = str.split("&");
+    const obj = {};
+    arr.forEach((item) => {
+      const [key, value] = item.split("=");
+      obj[key] = value;
+    });
+    return obj;
   },
   getErrorMsg(e) {
     const errorMsg = e["errno"] === -4078 ? "服务器报错" : e;

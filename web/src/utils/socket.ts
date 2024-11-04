@@ -27,12 +27,11 @@ export default function (userInfo: any, opts?: { setSocketMessages?: any }) {
   isConnect = true;
   disconnect();
   const { setSocketMessages } = opts || {};
-  socket = socketIo(socketConfig.socketUri);
+  socket = socketIo(socketConfig.socketUri + `?token=${getToken()}`);
   socket.on("connect", () => {
     if (!socket) return;
     socket.emit(socketConfig.types.SEND_USER, {
-      uuid: userInfo.uuid,
-      token: getToken()
+      uuid: userInfo.uuid
     });
     console.log("%c监听客户端连接成功-connect", "color: red");
   });

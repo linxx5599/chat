@@ -84,7 +84,7 @@ const Chat: React.FC = () => {
         }
       }
     };
-    mapFn[type]();
+    mapFn[type]?.();
   }, [socketMessages]);
 
   const bg = require("@/assets/images/bg.png").default;

@@ -13,7 +13,7 @@ class Chatrecord {
         builder.where("uuid", uuid).andWhere("targetUuid", targetUuid)
       ).orWhere((builder) =>
         builder.where("uuid", targetUuid).andWhere("targetUuid", uuid)
-      )
+      ) .orderBy('time', 'asc')
       .select(...arg);
   }
   // 添加

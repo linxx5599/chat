@@ -1,7 +1,8 @@
 const { Server: ioServer } = require("socket.io");
 const chatrecordController = require("./controllers/chatrecord");
 const dayjs = require("dayjs");
-const { asyncFn } = require("./utils");
+const { asyncFn, getQueryString } = require("./utils");
+const { verify } = require("./common/index.js");
 const socketConfig = {
   types: {
     //用户上线
@@ -21,7 +22,7 @@ const socketConfig = {
 let userOnlineData = [];
 module.exports = {
   getOnlineData: () => userOnlineData,
-  socketIoServer: (server) => {
+  socketIoServer: async (server) => {
     // 创建实时连接
     const io = new ioServer(server, {
       cors: {
@@ -31,12 +32,25 @@ module.exports = {
 
     // 监听连接
     io.on("connection", async (socket) => {
+      //获取请求头 校验权限
+      const { token } = getQueryString(socket.handshake.url);
+      if (!token) {
+        socket.disconnect();
+        return;
+      }
+      let userInfo;
+      try {
+        userInfo = await verify(token.replace(/^(Bearer\%20)/, ""));
+      } catch {
+        socket.disconnect();
+        return;
+      }
       console.log(`⚡: ${socket.id} 用户已连接!`);
-      socket.on(socketConfig.types.SEND_USER, ({ uuid, token }) => {
-        socket.uuid = uuid;
-        // console.log(uuid, "uuid", await User.all());
+
+      const _init = async () => {
+        socket.uuid = userInfo.uuid;
         const loginUser = userOnlineData.find(
-          (i) => i.uuid === uuid && i.token !== token
+          (i) => i.uuid === socket.uuid && i.token !== token
         );
         //其他用户登录已登录的用户
         if (loginUser) {
@@ -45,28 +59,61 @@ module.exports = {
         }
         //同一个登录用户 既:同一个浏览器多个窗口打开的同个账号
         const sameLoginUserIndex = userOnlineData.findIndex(
-          (i) => i.uuid === uuid && i.token === token
+          (i) => i.uuid === socket.uuid && i.token === token
         );
         if (sameLoginUserIndex > -1) {
           userOnlineData[sameLoginUserIndex].socketIds.push(socket.id);
         }
-        if (!userOnlineData.some((i) => i.uuid === uuid)) {
-          userOnlineData.push({ socketIds: [socket.id], uuid, token });
+        if (!userOnlineData.some((i) => i.uuid === socket.uuid)) {
+          userOnlineData.push({
+            socketIds: [socket.id],
+            uuid: socket.uuid,
+            token,
+          });
         }
-        //返回数据 去掉自己的数据列表
-        // const emitOnlineData = userOnlineData.reduce((curr, item) => {
-        //   const { socketIds } = item;
-        //   if (item.uuid !== uuid) {
-        //     curr.push({ socketIds, uuid: item.uuid });
-        //   }
-        //   return curr;
-        // }, []);
         //通知用户需要刷新数据
         io.emit(socketConfig.types.NOTICE_USER_ONLINE, {
           status: "success",
           uuid: socket.uuid,
         });
-      });
+      };
+      _init();
+
+      // socket.on(socketConfig.types.SEND_USER, ({ uuid }) => {
+      //   // socket.uuid = uuid;
+      //   // console.log(uuid, "uuid", await User.all());
+      //   const loginUser = userOnlineData.find(
+      //     (i) => i.uuid === uuid && i.token !== token
+      //   );
+      //   //其他用户登录已登录的用户
+      //   if (loginUser) {
+      //     socket.emit(socketConfig.types.NOTICE_LOGGED_IN, loginUser);
+      //     return;
+      //   }
+      //   //同一个登录用户 既:同一个浏览器多个窗口打开的同个账号
+      //   const sameLoginUserIndex = userOnlineData.findIndex(
+      //     (i) => i.uuid === uuid && i.token === token
+      //   );
+      //   if (sameLoginUserIndex > -1) {
+      //     userOnlineData[sameLoginUserIndex].socketIds.push(socket.id);
+      //   }
+      //   if (!userOnlineData.some((i) => i.uuid === uuid)) {
+      //     userOnlineData.push({ socketIds: [socket.id], uuid, token });
+      //   }
+      //   //返回数据 去掉自己的数据列表
+      //   // const emitOnlineData = userOnlineData.reduce((curr, item) => {
+      //   //   const { socketIds } = item;
+      //   //   if (item.uuid !== uuid) {
+      //   //     curr.push({ socketIds, uuid: item.uuid });
+      //   //   }
+      //   //   return curr;
+      //   // }, []);
+      //   //通知用户需要刷新数据
+      //   io.emit(socketConfig.types.NOTICE_USER_ONLINE, {
+      //     status: "success",
+      //     uuid: socket.uuid,
+      //   });
+      // });
 
       socket.on(
         socketConfig.types.SEND_USER_MSG,

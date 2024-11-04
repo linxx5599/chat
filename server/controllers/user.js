@@ -4,14 +4,14 @@ const {
   getErrorMsg,
   successJson,
   errorJson,
-  getUuid
+  getUuid,
 } = require("../utils/index.js");
 const { sign } = require("../common/index.js");
 const { getOnlineData } = require("../socket");
 
 const userController = {
   // showUser 获取用户数据并返回到页面
-  async showUser(req, res, next) {
+  async showUser(req, res) {
     try {
       const { uuid } = req.auth;
       const { itself } = req.query;
@@ -21,14 +21,14 @@ const userController = {
         item.online = getOnlineData().some((i) => i.uuid === item.uuid);
       });
       successJson(res, {
-        data: userData
+        data: userData,
       });
     } catch (e) {
       errorJson(res, { data: getErrorMsg(e) });
     }
   },
   // showUser 获取用户数据并返回到页面
-  async showUserInfo(req, res, next) {
+  async showUserInfo(req, res) {
     try {
       const { uuid } = req.auth;
       if (!uuid) {
@@ -42,14 +42,14 @@ const userController = {
         return;
       }
       successJson(res, {
-        data
+        data,
       });
     } catch (e) {
       errorJson(res, { data: getErrorMsg(e) });
     }
   },
   //创建用户
-  async insertUser(req, res, next) {
+  async insertUser(req, res) {
     const userData = await User.all();
     if (userData.length > 20) {
       errorJson(res, { message: "用户创建已达到最大限制" });
@@ -76,14 +76,14 @@ const userController = {
         return;
       }
       successJson(res, {
-        data: { name, uuid }
+        data: { name, uuid },
       });
     } catch (e) {
       errorJson(res);
     }
   },
   // 登录用户
-  async login(req, res, next) {
+  async login(req, res) {
     try {
       const userData = await User.all();
       const { body } = req;
@@ -102,18 +102,19 @@ const userController = {
         errorJson(res, { message: "密码错误" });
         return;
       }
+      
       const token = "Bearer " + sign({ uuid: findUser.uuid });
       successJson(
         res,
         {
-          message: "登录成功"
+          message: "登录成功",
         },
         { token }
       );
     } catch (e) {
       errorJson(res, { message: "登录失败" });
     }
-  }
+  },
 };
 
 module.exports = userController;

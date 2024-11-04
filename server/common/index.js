@@ -13,6 +13,13 @@ function sign(data) {
     throw new Error("加密失败");
   }
 }
+function verify(token) {
+  try {
+    return jwt.verify(token, JWT_SELECT);
+  } catch (error) {
+    throw new Error("解密失败");
+  }
+}
 
 // 设置token
 function setToken(data, res) {
@@ -25,4 +32,5 @@ function setToken(data, res) {
 module.exports = {
   sign,
   setToken,
+  verify,
 };
