@@ -1,4 +1,7 @@
 module.exports = {
+  isObject(o) {
+    return Object.prototype.toString.call(o) === "[object Object]";
+  },
   getErrorMsg(e) {
     const errorMsg = e["errno"] === -4078 ? "服务器报错" : e;
     return errorMsg;
@@ -15,7 +18,7 @@ module.exports = {
     res.json({ code, message, data, ...obj });
   },
   //随机生成uuid
-  getUuid(num = 36, str = '') {
+  getUuid(num = 36, str = "") {
     let s = [];
     let hexDigits = "0123456789abcdef";
     for (let i = 0; i < num; i++) {
@@ -30,9 +33,10 @@ module.exports = {
   },
 
   asyncFn(fn) {
-    return new Promise(resolve => {
-      fn.then(result =>
-        resolve([null, result])).catch(error => resolve([error || true, null]))
-    })
-  }
+    return new Promise((resolve) => {
+      fn.then((result) => resolve([null, result])).catch((error) =>
+        resolve([error || true, null])
+      );
+    });
+  },
 };

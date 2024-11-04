@@ -15,5 +15,5 @@ module.exports = require('knex')({
         error(message) {
             console.log('[knex error]', message)
         }
-    }
+    },
 })

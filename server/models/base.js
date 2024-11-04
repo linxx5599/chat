@@ -1,5 +1,4 @@
 const knex = require("../models/knex");
-
 class Base {
   constructor(props) {
     this.table = props;

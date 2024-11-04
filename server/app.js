@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const logger = require("./logger");
 
+require("./entitys/index");
+
 // const indexRouter = require("./routes/index");
 const getUserInfoRouter = require("./routes/user/getUserInfo");
 const getUserRouter = require("./routes/user/getUser");
@@ -30,7 +32,7 @@ app.use(require("cors")());
 // unless指定哪些接口不需要访问权限，即白名单。
 app.use(
   expressjwt({ secret: JWT_SELECT, algorithms: ["HS256"] }).unless({
-    path: ["/login", "/insertUser"]
+    path: ["/login", "/insertUser"],
   })
 );
 
@@ -70,7 +72,7 @@ const _errorHandler = (err, req, res, next) => {
   res.status(err.status || 500).json({
     code: -1,
     message: errorMsg,
-    data: null
+    data: null,
   });
 };
 app.use(_errorHandler);
