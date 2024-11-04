@@ -16,14 +16,14 @@ module.exports = merge(baseConfig, {
     },
     proxy: {
       "/api": {
-        target: "http://192.168.5.8:3000/",
+        target: "http://localhost:3000/",
         changeOrigin: true,
         //是否跨域
         pathRewrite: { "^/api": "" },
         ws: false
       },
       "/socket": {
-        target: "http://192.168.5.8:3000",
+        target: "http://localhost:3000",
         changeOrigin: true,
         //是否跨域
         pathRewrite: { "^/socket": "" },

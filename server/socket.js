@@ -13,8 +13,8 @@ const socketConfig = {
     //发送聊天信息给服务端
     SEND_USER_MSG: "send-user-msg",
     //发送信息成功/失败回调
-    NOTICE_SEND_MSG: "notice-send-msg"
-  }
+    NOTICE_SEND_MSG: "notice-send-msg",
+  },
 };
 
 //在线人数的用户
@@ -25,8 +25,8 @@ module.exports = {
     // 创建实时连接
     const io = new ioServer(server, {
       cors: {
-        origin: "*"
-      }
+        origin: "*",
+      },
     });
 
     // 监听连接
@@ -62,25 +62,34 @@ module.exports = {
         //   return curr;
         // }, []);
         //通知用户需要刷新数据
-        io.emit(
-          socketConfig.types.NOTICE_USER_ONLINE,
-          { status: "success", uuid: socket.uuid }
-        );
+        io.emit(socketConfig.types.NOTICE_USER_ONLINE, {
+          status: "success",
+          uuid: socket.uuid,
+        });
       });
 
-      socket.on(socketConfig.types.SEND_USER_MSG, async ({ message, msgId, name, targetUuid }) => {
-        const params = {
-          message,
-          msgId,
-          time: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-          uuid: socket.uuid,
-          name,
-          targetUuid
+      socket.on(
+        socketConfig.types.SEND_USER_MSG,
+        async ({ message, msgId, name, targetUuid }) => {
+          const params = {
+            message,
+            msgId,
+            time: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+            uuid: socket.uuid,
+            name,
+            targetUuid,
+          };
+          const [error] = await asyncFn(chatrecordController.sendChats(params));
+
+          const status = error ? "fail" : "success";
+          io.emit(socketConfig.types.NOTICE_SEND_MSG, {
+            status,
+            msgId,
+            uuid: socket.uuid,
+            targetUuid,
+          });
         }
-        const [error] = await asyncFn(chatrecordController.sendChats(params))
-        const status = error ? 'fail' : 'success'
-        io.emit(socketConfig.types.NOTICE_SEND_MSG, { status, msgId, uuid: socket.uuid, targetUuid })
-      });
+      );
       socket.on("disconnect", () => {
         //在线用户列表中找出离线的用户索引
         const userOnlineIndex = userOnlineData.findIndex(
@@ -99,11 +108,14 @@ module.exports = {
             //数据全部为空则不需要通知然后用户更新数据了
             if (userOnlineData.length === 0) return;
             //通知用户需要刷新数据
-            io.emit(socketConfig.types.NOTICE_USER_ONLINE, { status: "success", uuid: socket.uuid });
+            io.emit(socketConfig.types.NOTICE_USER_ONLINE, {
+              status: "success",
+              uuid: socket.uuid,
+            });
           }
         }
         console.log("🔥: 一个用户已断开连接");
       });
     });
-  }
+  },
 };

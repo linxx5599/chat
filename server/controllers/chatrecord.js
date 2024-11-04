@@ -13,7 +13,7 @@ const chatrecordController = {
       }
       const userData = await Chatrecord.findAllChats({ uuid, targetUuid });
       successJson(res, {
-        data: userData
+        data: userData,
       });
     } catch (e) {
       errorJson(res, { data: getErrorMsg(e) });
@@ -21,7 +21,7 @@ const chatrecordController = {
   },
   sendChats(params) {
     return Chatrecord.sendChats(params);
-  }
+  },
 };
 
 module.exports = chatrecordController;
