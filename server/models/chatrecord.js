@@ -11,9 +11,11 @@ class Chatrecord {
     return knex(this.table)
       .where((builder) =>
         builder.where("uuid", uuid).andWhere("targetUuid", targetUuid)
-      ).orWhere((builder) =>
+      )
+      .orWhere((builder) =>
         builder.where("uuid", targetUuid).andWhere("targetUuid", uuid)
-      ) .orderBy('time', 'asc')
+      )
+      .orderBy("time", "asc")
       .select(...arg);
   }
   // 添加
